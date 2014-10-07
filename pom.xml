@@ -33,4 +33,10 @@
   		<version>1.8.7</version>
   	</dependency>
   </dependencies>
+  <properties>
+  	<maven.compiler.target>1.8</maven.compiler.target>
+  	<maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.testTarget>1.8</maven.compiler.testTarget>
+    <maven.compiler.testSource>1.8</maven.compiler.testSource>
+  </properties>
 </project>
