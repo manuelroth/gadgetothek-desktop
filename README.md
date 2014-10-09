@@ -1,4 +1,4 @@
-# Gadgetothek Desktop App [![Build Status](https://travis-ci.org/lukasmartinelli/gadgetothek-desktop.svg?branch=master)](https://travis-ci.org/lukasmartinelli/gadgetothek-desktop)
+# Gadgetothek Desktop App [![Build Status](https://travis-ci.org/manuelroth/gadgetothek-desktop.svg?branch=master)](https://travis-ci.org/manuelroth/gadgetothek-desktop)
 
 This is a Java Swing Application for the desktop.
 It is a mini project created after the specifications given
