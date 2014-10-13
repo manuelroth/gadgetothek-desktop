@@ -3,10 +3,12 @@ package bl;
  
 import java.util.List;
 import java.util.Observable;
+import java.util.Observer;
 import java.util.stream.Collectors;
+
 import dl.LibraryData;
 
-public class Library {
+public class Library extends Observable implements Observer{
 	
 	
 	private LibraryData data;
@@ -88,12 +90,15 @@ public class Library {
 		return data.getCustomers().stream().filter(p->p.getStudentNumber().equals(id)).findAny().orElse(null);
 	}	
 	
-	public void addGadget(Gadget gadget) {		
+	public void addGadget(Gadget gadget) {	
+		gadget.addObserver(this);
 		data.addGadget(gadget);
+		doNotify();
 	}
 
 	public void updateGadget(Gadget gadget) {
-		data.updateGadget(gadget);		
+		data.updateGadget(gadget);	
+		doNotify();
 	}
 	
 	public void updateLoan(Loan loan) {
@@ -170,5 +175,16 @@ public class Library {
 	public boolean canReservation(Gadget gadget, Customer customer)
 	{		
 		return getReservatonFor(gadget, customer, true) == null;
+	}
+	
+	private void doNotify() {
+		setChanged();
+		notifyObservers();
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		setChanged();
+		notifyObservers(arg);
 	}	
 }
