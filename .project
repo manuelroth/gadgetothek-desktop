@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
+<<<<<<< HEAD
 	<name>Swing</name>
+=======
+	<name>gadgetothek-desktop</name>
+>>>>>>> ece3acc9ec67d3f45808b4cc6bcbe9f9c3c3ec31
 	<comment></comment>
 	<projects>
 	</projects>
@@ -10,8 +14,20 @@
 			<arguments>
 			</arguments>
 		</buildCommand>
+<<<<<<< HEAD
 	</buildSpec>
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
+=======
+		<buildCommand>
+			<name>org.eclipse.m2e.core.maven2Builder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>org.eclipse.jdt.core.javanature</nature>
+		<nature>org.eclipse.m2e.core.maven2Nature</nature>
+>>>>>>> ece3acc9ec67d3f45808b4cc6bcbe9f9c3c3ec31
 	</natures>
 </projectDescription>

@@ -1,5 +1,14 @@
 *.class
 
+<<<<<<< HEAD
+=======
+# Eclipse Settings
+.settings
+
+# Maven output
+target
+
+>>>>>>> ece3acc9ec67d3f45808b4cc6bcbe9f9c3c3ec31
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
