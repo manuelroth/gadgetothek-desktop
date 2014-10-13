@@ -41,7 +41,7 @@ public class GadgetMasterFrame extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		
-		JButton btnNewButton = new JButton("Gadget editieren");x
+		JButton btnNewButton = new JButton("Gadget editieren");
 		
 		JButton btnNewButton_1 = new JButton("Gadget erfassen");
 		btnNewButton_1.addActionListener(new ActionListener() {
