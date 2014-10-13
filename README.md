@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-Gadgetothek
-===========
-=======
 # Gadgetothek Desktop App [![Build Status](https://travis-ci.org/manuelroth/gadgetothek-desktop.svg?branch=master)](https://travis-ci.org/manuelroth/gadgetothek-desktop)
 
 This is a Java Swing Application for the desktop.
@@ -26,4 +22,3 @@ and build the project:
 ```bash
 mvn clean install
 ```
->>>>>>> ece3acc9ec67d3f45808b4cc6bcbe9f9c3c3ec31
