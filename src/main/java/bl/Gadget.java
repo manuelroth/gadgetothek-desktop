@@ -1,8 +1,6 @@
 package bl;
 
 import java.util.UUID;
-import java.util.Observable;
-
 import dl.Dto;
 
 

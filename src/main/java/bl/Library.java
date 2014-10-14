@@ -3,7 +3,6 @@ package bl;
  
 import java.util.List;
 import java.util.Observable;
-import java.util.Observer;
 import java.util.stream.Collectors;
 
 import dl.CrudListener;
@@ -22,7 +21,6 @@ public class Library extends Observable{
 			
 			@Override
 			public void changed(MessageData message) {
-				// TODO Auto-generated method stub
 				doNotify(message);
 			}
 		});
