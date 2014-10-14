@@ -5,7 +5,7 @@
   <version>0.0.1-SNAPSHOT</version>
   <name>Gadgetothek</name>
   <description>Desktop UI built with Swing for the Gadgetothek</description>
-  <url>https://github.com/manuelroth/Gadgetothek</url>
+  <url>https://github.com/manuelroth/gadgetothek-desktop</url>
   <dependencies>
   	<dependency>
   		<groupId>com.google.code.gson</groupId>
