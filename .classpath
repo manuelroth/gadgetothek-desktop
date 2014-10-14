@@ -1,35 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-<<<<<<< HEAD
-	<classpathentry kind="src" path="src"/>
-	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
-	<classpathentry kind="lib" path="Lib/async-http-client-1.8.7.jar"/>
-	<classpathentry kind="lib" path="Lib/gson-2.2.4.jar"/>
-	<classpathentry kind="lib" path="Lib/junit-3.8.1.jar"/>
-	<classpathentry kind="lib" path="Lib/netty-3.9.0.Final.jar"/>
-	<classpathentry kind="lib" path="Lib/slf4j-api-1.7.5.jar"/>
-	<classpathentry kind="lib" path="Lib/weblaf-complete-1.28.jar"/>
-	<classpathentry kind="output" path="bin"/>
-=======
 	<classpathentry kind="src" output="target/classes" path="src/main/java">
 		<attributes>
 			<attribute name="optional" value="true"/>
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry excluding="**" kind="src" output="target/classes" path="src/main/resources">
-		<attributes>
-			<attribute name="maven.pomderived" value="true"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="src" output="target/test-classes" path="src/test/java">
 		<attributes>
 			<attribute name="optional" value="true"/>
-			<attribute name="maven.pomderived" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry excluding="**" kind="src" output="target/test-classes" path="src/test/resources">
-		<attributes>
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
@@ -44,5 +23,4 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="output" path="target/classes"/>
->>>>>>> ece3acc9ec67d3f45808b4cc6bcbe9f9c3c3ec31
 </classpath>
