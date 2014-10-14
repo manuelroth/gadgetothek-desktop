@@ -24,6 +24,7 @@ import java.awt.FlowLayout;
 import javax.swing.SwingConstants;
 
 import bl.Gadget;
+import bl.Library;
 
 import java.awt.Dimension;
 
@@ -45,14 +46,15 @@ public class GadgetDetailFrame implements Observer{
 	private JLabel id;
 	private JComboBox zustand;
 	private Gadget gadget;
+	private Library library;
 
 	/**
 	 * Create the application.
 	 * @param gadget 
 	 */
-	public GadgetDetailFrame(Gadget gadget) {
-		gadget.addObserver(this);
+	public GadgetDetailFrame(Gadget gadget, Library library) {
 		this.gadget = gadget;
+		this.library = library;
 		initialize(); 
 	}
 
@@ -185,15 +187,15 @@ public class GadgetDetailFrame implements Observer{
 		panel_1.add(btnSpeichern);
 		btnSpeichern.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				gadget.setData(gadget);
-				//Add to GadgetListModel
+				library.addGadget(gadget);
+				frame.dispose();
 			}
 		});
 	}
 
 	@Override
 	public void update(Observable o, Object arg) {
-		Gadget gadget = (Gadget)o;
+		Gadget gadget = (Gadget) arg;
 		name.setText(gadget.getName());
 		hersteller.setText(gadget.getManufacturer());
 		preis.setText(String.valueOf(gadget.getPrice()));

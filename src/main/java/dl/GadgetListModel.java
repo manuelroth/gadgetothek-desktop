@@ -6,7 +6,7 @@ import javax.swing.AbstractListModel;
 import bl.Library;
 import bl.Gadget;
 
-public class GadgetListModel extends AbstractListModel implements Observer{
+public class GadgetListModel extends AbstractListModel<Gadget> implements Observer{
 	
 	private static final long serialVersionUID = 1L;
 	Library library;
@@ -22,17 +22,15 @@ public class GadgetListModel extends AbstractListModel implements Observer{
 
 	@Override
 	public void update(Observable obj, Object arg1) {
-		if (obj instanceof Gadget){
-			int pos = library.getGadgets().indexOf((Gadget)obj);
+		MessageData data = (MessageData) arg1;
+		if (data.getData() instanceof Gadget){
+			int pos = library.getGadgets().indexOf((Gadget)data.getData());
 			fireContentsChanged(this, pos, pos);						
-		}
-		if (obj instanceof Library){
-			fireContentsChanged(this, 0, library.getGadgets().size());
 		}
 	}
 
 	@Override
-	public Object getElementAt(int index) {
+	public Gadget getElementAt(int index) {
 		return library.getGadget(String.valueOf(index));
 	}
 

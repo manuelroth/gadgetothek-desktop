@@ -6,9 +6,11 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.stream.Collectors;
 
+import dl.CrudListener;
 import dl.LibraryData;
+import dl.MessageData;
 
-public class Library extends Observable implements Observer{
+public class Library extends Observable{
 	
 	
 	private LibraryData data;
@@ -16,6 +18,14 @@ public class Library extends Observable implements Observer{
 	public Library(LibraryData data)
 	{
 		this.data = data;	
+		data.registerGadgetListener(new CrudListener<Gadget>() {
+			
+			@Override
+			public void changed(MessageData message) {
+				// TODO Auto-generated method stub
+				doNotify(message);
+			}
+		});
 		
 	}
 
@@ -91,14 +101,11 @@ public class Library extends Observable implements Observer{
 	}	
 	
 	public void addGadget(Gadget gadget) {	
-		gadget.addObserver(this);
 		data.addGadget(gadget);
-		doNotify();
 	}
 
 	public void updateGadget(Gadget gadget) {
 		data.updateGadget(gadget);	
-		doNotify();
 	}
 	
 	public void updateLoan(Loan loan) {
@@ -177,14 +184,8 @@ public class Library extends Observable implements Observer{
 		return getReservatonFor(gadget, customer, true) == null;
 	}
 	
-	private void doNotify() {
+	private void doNotify(MessageData message) {
 		setChanged();
-		notifyObservers();
-	}
-
-	@Override
-	public void update(Observable o, Object arg) {
-		setChanged();
-		notifyObservers(arg);
+		notifyObservers(message);
 	}	
 }

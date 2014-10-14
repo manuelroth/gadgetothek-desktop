@@ -71,7 +71,7 @@ public class GadgetMasterFrame extends JFrame {
 		newGadgetButton.setPreferredSize(new java.awt.Dimension(140, 21));
 		newGadgetButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				GadgetDetailFrame window = new GadgetDetailFrame(new Gadget(""));
+				GadgetDetailFrame window = new GadgetDetailFrame(new Gadget(), new Library(new LocalLibrary()));
 			}
 		});
 		this.getRootPane().setDefaultButton(newGadgetButton);
@@ -82,7 +82,8 @@ public class GadgetMasterFrame extends JFrame {
 		editGadgetButton.setPreferredSize(new java.awt.Dimension(140, 21));
 		editGadgetButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				//Create GadgetDetailFrame with selected Gadget
+				//GadgetDetailFrame window = new GadgetDetailFrame(selectedGadget, new Library(new LocalLibrary()));
 			}
 		});
 	}

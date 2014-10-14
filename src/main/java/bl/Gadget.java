@@ -6,7 +6,7 @@ import java.util.Observable;
 import dl.Dto;
 
 
-public class Gadget extends Observable implements Dto<Gadget>{
+public class Gadget implements Dto<Gadget>{
 	
 	public enum Condition {NEW, GOOD, DAMAGED, WASTE, LOST }		
 	private final String inventoryNumber;	
@@ -14,6 +14,10 @@ public class Gadget extends Observable implements Dto<Gadget>{
 	private double price;
 	private String manufacturer;
 	private String name;
+	
+	public Gadget () {
+		this("");
+	}
 	
 	public Gadget(String name) {
 		this.name = name;
@@ -72,7 +76,6 @@ public class Gadget extends Observable implements Dto<Gadget>{
 		this.setManufacturer(gadget.getManufacturer());
 		this.setName(gadget.getName());
 		this.setPrice(gadget.getPrice());
-		doNotify();
 	}
 
 	@Override
@@ -100,10 +103,5 @@ public class Gadget extends Observable implements Dto<Gadget>{
 		} else if (!inventoryNumber.equals(other.inventoryNumber))
 			return false;
 		return true;
-	}
-	
-	public void doNotify(){
-		this.setChanged();
-		this.notifyObservers();
 	}
 }
