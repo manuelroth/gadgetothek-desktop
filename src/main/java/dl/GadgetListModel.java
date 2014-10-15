@@ -31,7 +31,7 @@ public class GadgetListModel extends AbstractListModel<Gadget> implements Observ
 
 	@Override
 	public Gadget getElementAt(int index) {
-		return library.getGadget(String.valueOf(index));
+		return library.getGadgets().get(index);
 	}
 
 	@Override

@@ -1,10 +1,13 @@
 package pl;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
@@ -15,10 +18,12 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.JList;
 import javax.swing.JButton;
+
 import bl.Gadget;
 import bl.Library;
 import dl.GadgetListModel;
 import dl.LocalLibrary;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -37,6 +42,7 @@ public class GadgetMasterFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public GadgetMasterFrame() {
+		setTitle("Gadgets Biblio");
 		setMinimumSize(new Dimension(540, 340));
 		setSize(new Dimension(540, 340));
 		setBounds(100, 100, 450, 300);
@@ -63,6 +69,16 @@ public class GadgetMasterFrame extends JFrame {
 		gadgetsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		gadgetsList.setModel(gadgetListModel);
 		scrollPane.setViewportView(gadgetsList);
+		gadgetsList.setCellRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                Component renderer = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                if (renderer instanceof JLabel && value instanceof Gadget) {
+                    ((JLabel) renderer).setText(((Gadget) value).getName());
+                }
+                return renderer;
+            }
+        });
 		
 		searchTextField = new JTextField();
 		searchTextField.setText("Suchen...");
@@ -84,9 +100,9 @@ public class GadgetMasterFrame extends JFrame {
 		
 		JButton editGadgetButton = new JButton("Gadget editieren");
 		buttonPanel.add(editGadgetButton);
-		if(gadgetsList.isSelectionEmpty()){
-			editGadgetButton.setEnabled(false);
-		}
+//		if(gadgetsList.isSelectionEmpty()){
+//			editGadgetButton.setEnabled(false);
+//		}
 		editGadgetButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Gadget gadget = (Gadget) gadgetsList.getSelectedValue();
