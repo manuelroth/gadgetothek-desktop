@@ -35,8 +35,8 @@ public class GadgetMasterFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 	private JTextField searchTextField;
-	
-	private GadgetListModel gadgetListModel = new GadgetListModel(new Library(new LocalLibrary()));
+	private Library library = new Library(new LocalLibrary());
+	private GadgetListModel gadgetListModel = new GadgetListModel(library);
 
 	/**
 	 * Create the frame.
@@ -62,9 +62,6 @@ public class GadgetMasterFrame extends JFrame {
 		JScrollPane scrollPane = new JScrollPane();
 		gadgetsTab.add(scrollPane, BorderLayout.CENTER);
 		
-		JScrollBar scrollBar = new JScrollBar();
-		gadgetsTab.add(scrollBar, BorderLayout.EAST);
-		
 		JList<Gadget> gadgetsList = new JList<Gadget>();
 		gadgetsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		gadgetsList.setModel(gadgetListModel);
@@ -79,7 +76,6 @@ public class GadgetMasterFrame extends JFrame {
                 return renderer;
             }
         });
-		
 		searchTextField = new JTextField();
 		searchTextField.setText("Suchen...");
 		searchTextField.setToolTipText("Suchen...");
@@ -94,7 +90,7 @@ public class GadgetMasterFrame extends JFrame {
 		buttonPanel.add(newGadgetButton);
 		newGadgetButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				GadgetDetailFrame window = new GadgetDetailFrame(new Gadget(), new Library(new LocalLibrary()), true);
+				GadgetDetailFrame window = new GadgetDetailFrame(new Gadget(), library, true);
 			}
 		});
 		
@@ -106,7 +102,7 @@ public class GadgetMasterFrame extends JFrame {
 		editGadgetButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Gadget gadget = (Gadget) gadgetsList.getSelectedValue();
-				GadgetDetailFrame window = new GadgetDetailFrame(gadget, new Library(new LocalLibrary()), false);
+				GadgetDetailFrame window = new GadgetDetailFrame(gadget, library, false);
 			}
 		});
 		

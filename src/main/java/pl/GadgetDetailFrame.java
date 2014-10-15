@@ -33,7 +33,7 @@ import java.awt.event.ActionEvent;
 import java.util.Observable;
 import java.util.Observer;
 
-public class GadgetDetailFrame implements Observer{
+public class GadgetDetailFrame{
 
 	private JFrame frame;
 	private JTextField nameTextField;
@@ -194,6 +194,7 @@ public class GadgetDetailFrame implements Observer{
 		buttonPanel.add(saveButton);
 		saveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				updateAllAttributs();
 				if(isNewGadget){
 					library.addGadget(gadget);
 				}else{
@@ -203,15 +204,10 @@ public class GadgetDetailFrame implements Observer{
 			}
 		});
 	}
-
-	@Override
-	public void update(Observable o, Object arg) {
-		Gadget gadget = (Gadget) arg;
-		nameTextField.setText(gadget.getName());
-		manufactorerTextField.setText(gadget.getManufacturer());
-		prizeTextField.setText(String.valueOf(gadget.getPrice()));
-		idLabel.setText(String.valueOf(gadget.getInventoryNumber()));
-		conditionTextField.setSelectedItem(gadget.getCondition());
+	void updateAllAttributs(){
+		gadget.setName(nameTextField.getText());
+		gadget.setPrice(Double.valueOf(prizeTextField.getText()));
+		gadget.setCondition((Condition)conditionTextField.getSelectedItem());
+		gadget.setManufacturer(manufactorerTextField.getText());		
 	}
-
 }

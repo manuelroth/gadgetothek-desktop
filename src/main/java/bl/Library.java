@@ -24,7 +24,6 @@ public class Library extends Observable{
 				doNotify(message);
 			}
 		});
-		
 	}
 
 	
