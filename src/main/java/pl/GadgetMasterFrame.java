@@ -11,16 +11,20 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 import javax.swing.JList;
 import javax.swing.JButton;
 
 import bl.Gadget;
 import bl.Library;
-import dl.GadgetListModel;
+import dl.GadgetTableModel;
 import dl.LocalLibrary;
 
 import java.awt.event.ActionListener;
@@ -34,8 +38,10 @@ public class GadgetMasterFrame extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 	private JTextField searchTextField;
+    private JTable gadgetsTable = new JTable();
+    private TableRowSorter<GadgetTableModel> sorter;
 	private Library library = new Library(new LocalLibrary());
-	private GadgetListModel gadgetListModel = new GadgetListModel(library);
+	private GadgetTableModel gadgetTableModel = new GadgetTableModel(library);
 
 	/**
 	 * Create the frame.
@@ -59,22 +65,10 @@ public class GadgetMasterFrame extends JFrame {
 		gadgetsPanel.setLayout(new GridLayout(1, 0, 0, 0));
 		
 		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setViewportView(gadgetsTable);
 		gadgetsTab.add(scrollPane, BorderLayout.CENTER);
-		
-		JList<Gadget> gadgetsList = new JList<Gadget>();
-		gadgetsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		gadgetsList.setModel(gadgetListModel);
-		scrollPane.setViewportView(gadgetsList);
-		gadgetsList.setCellRenderer(new DefaultListCellRenderer() {
-            @Override
-            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-                Component renderer = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-                if (renderer instanceof JLabel && value instanceof Gadget) {
-                    ((JLabel) renderer).setText(((Gadget) value).getName());
-                }
-                return renderer;
-            }
-        });
+		initTable();
+		scrollPane.setViewportView(gadgetsTable);
 		searchTextField = new JTextField();
 		searchTextField.setText("Suchen...");
 		searchTextField.setToolTipText("Suchen...");
@@ -96,7 +90,7 @@ public class GadgetMasterFrame extends JFrame {
 		JButton editGadgetButton = new JButton("Gadget editieren");
 		buttonPanel.add(editGadgetButton);
 		editGadgetButton.setEnabled(false);
-		gadgetsList.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+		gadgetsTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
@@ -106,12 +100,21 @@ public class GadgetMasterFrame extends JFrame {
 
 		editGadgetButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Gadget gadget = (Gadget) gadgetsList.getSelectedValue();
+				int row = gadgetsTable.getSelectedRow();
+				Gadget gadget = (Gadget) gadgetTableModel.getGadget(row);
 				GadgetDetailFrame window = new GadgetDetailFrame(gadget, library, false);
 			}
 		});
 		
 		JPanel ausleihenTab = new JPanel();
 		tabbedPane.addTab("Ausleihen & Rückgabe", null, ausleihenTab, null);
+	}
+	
+	private void initTable(){
+		gadgetsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		gadgetsTable.setModel(gadgetTableModel);
+		
+		sorter = new TableRowSorter<GadgetTableModel>(gadgetTableModel);
+		gadgetsTable.setRowSorter(sorter);
 	}
 }
