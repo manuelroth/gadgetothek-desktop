@@ -29,8 +29,6 @@ import bl.Gadget.Condition;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.util.Observable;
-import java.util.Observer;
 
 public class GadgetDetailFrame{
 
