@@ -9,7 +9,6 @@ import javax.swing.DefaultListCellRenderer;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
@@ -96,9 +95,15 @@ public class GadgetMasterFrame extends JFrame {
 		
 		JButton editGadgetButton = new JButton("Gadget editieren");
 		buttonPanel.add(editGadgetButton);
-//		if(gadgetsList.isSelectionEmpty()){
-//			editGadgetButton.setEnabled(false);
-//		}
+		editGadgetButton.setEnabled(false);
+		gadgetsList.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+			
+			@Override
+			public void valueChanged(ListSelectionEvent e) {
+				editGadgetButton.setEnabled(true);
+			}
+		});
+
 		editGadgetButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Gadget gadget = (Gadget) gadgetsList.getSelectedValue();
