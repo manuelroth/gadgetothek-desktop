@@ -12,7 +12,6 @@ import java.awt.Insets;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
-
 import javax.swing.JButton;
 
 import java.awt.FlowLayout;
@@ -190,17 +189,22 @@ public class GadgetDetailFrame{
 			saveButton.setText("Speichern");
 		}
 		
+		nameTextField.setInputVerifier(new RequiredInputVerifier());
+		manufactorerTextField.setInputVerifier(new RequiredInputVerifier());
+		
 		saveButton.setHorizontalAlignment(SwingConstants.RIGHT);
 		buttonPanel.add(saveButton);
 		saveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				updateAllAttributs();
-				if(isNewGadget){
-					library.addGadget(gadget);
-				}else{
-					library.updateGadget(gadget);
+				if(nameTextField.isValid() && manufactorerTextField.isValid()) {
+					updateAllAttributs();
+					if(isNewGadget){
+						library.addGadget(gadget);
+					}else{
+						library.updateGadget(gadget);
+					}
+					frame.dispose();
 				}
-				frame.dispose();
 			}
 		});
 	}
