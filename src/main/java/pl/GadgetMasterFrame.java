@@ -1,32 +1,22 @@
 package pl;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 
-import javax.swing.DefaultListCellRenderer;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
-import javax.swing.JList;
 import javax.swing.JButton;
 
 import bl.Gadget;
 import bl.Library;
-import dl.GadgetTableModel;
-import dl.LocalLibrary;
-
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -40,13 +30,14 @@ public class GadgetMasterFrame extends JFrame {
 	private JTextField searchTextField;
     private JTable gadgetsTable = new JTable();
     private TableRowSorter<GadgetTableModel> sorter;
-	private Library library = new Library(new LocalLibrary());
-	private GadgetTableModel gadgetTableModel = new GadgetTableModel(library);
+	private GadgetTableModel gadgetTableModel;
 
 	/**
 	 * Create the frame.
 	 */
-	public GadgetMasterFrame() {
+	public GadgetMasterFrame(Library library) {
+		gadgetTableModel = new GadgetTableModel(library);
+		
 		setTitle("Gadgets Biblio");
 		setMinimumSize(new Dimension(540, 340));
 		setSize(new Dimension(540, 340));

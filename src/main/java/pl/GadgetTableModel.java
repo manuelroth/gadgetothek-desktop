@@ -1,10 +1,11 @@
-package dl;
+package pl;
 
 import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.table.AbstractTableModel;
 
+import dl.MessageData;
 import bl.Library;
 import bl.Gadget;
 

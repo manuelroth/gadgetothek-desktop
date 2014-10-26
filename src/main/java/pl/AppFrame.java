@@ -8,11 +8,16 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JTabbedPane;
 
+import bl.Library;
+import dl.LocalLibrary;
+
 public class AppFrame extends JFrame {
 
 	private JPanel contentPane;
 
 	public AppFrame() {
+		Library library = new Library(new LocalLibrary());
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		setTitle("Gadgets Bibliothek");
@@ -24,10 +29,10 @@ public class AppFrame extends JFrame {
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		contentPane.add(tabbedPane, BorderLayout.NORTH);
 		
-		JFrame gadgetMasterFrame = new GadgetMasterFrame();
+		JFrame gadgetMasterFrame = new GadgetMasterFrame(library);
 		tabbedPane.addTab("Gadgets", null, gadgetMasterFrame.getContentPane(), null);
 		
-		JFrame borrowMasterFrame = new BorrowMasterFrame();
+		JFrame borrowMasterFrame = new BorrowMasterFrame(library);
 		tabbedPane.addTab("Ausleihen & Rückgabe", null, borrowMasterFrame.getContentPane(), null);
 	}
 
