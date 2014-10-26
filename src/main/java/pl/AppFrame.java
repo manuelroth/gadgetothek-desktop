@@ -27,9 +27,8 @@ public class AppFrame extends JFrame {
 		JFrame gadgetMasterFrame = new GadgetMasterFrame();
 		tabbedPane.addTab("Gadgets", null, gadgetMasterFrame.getContentPane(), null);
 		
-		JPanel borrowTab = new JPanel();
-		tabbedPane.addTab("Ausleihen & Rückgabe", null, borrowTab, null);
-		borrowTab.setLayout(new BorderLayout(0, 0));	
+		JFrame borrowMasterFrame = new BorrowMasterFrame();
+		tabbedPane.addTab("Ausleihen & Rückgabe", null, borrowMasterFrame.getContentPane(), null);
 	}
 
 }
