@@ -52,23 +52,11 @@ public class GadgetMasterFrame extends JFrame {
 		setSize(new Dimension(540, 340));
 		setBounds(100, 100, 450, 300);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		getContentPane().add(tabbedPane, BorderLayout.CENTER);
-		
-		JPanel gadgetsTab = new JPanel();
-		tabbedPane.addTab("Gadgets", null, gadgetsTab, null);
-		gadgetsTab.setLayout(new BorderLayout(0, 0));
+		initTable();
 		
 		JPanel gadgetsPanel = new JPanel();
-		gadgetsTab.add(gadgetsPanel, BorderLayout.NORTH);
+		getContentPane().add(gadgetsPanel, BorderLayout.NORTH);
 		gadgetsPanel.setLayout(new GridLayout(1, 0, 0, 0));
-		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setViewportView(gadgetsTable);
-		gadgetsTab.add(scrollPane, BorderLayout.CENTER);
-		initTable();
-		scrollPane.setViewportView(gadgetsTable);
 		searchTextField = new JTextField();
 		searchTextField.setText("Suchen...");
 		searchTextField.setToolTipText("Suchen...");
@@ -90,6 +78,11 @@ public class GadgetMasterFrame extends JFrame {
 		JButton editGadgetButton = new JButton("Gadget editieren");
 		buttonPanel.add(editGadgetButton);
 		editGadgetButton.setEnabled(false);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		getContentPane().add(scrollPane, BorderLayout.SOUTH);
+		scrollPane.setViewportView(gadgetsTable);
+		scrollPane.setViewportView(gadgetsTable);
 		gadgetsTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			
 			@Override
@@ -97,17 +90,14 @@ public class GadgetMasterFrame extends JFrame {
 				editGadgetButton.setEnabled(true);
 			}
 		});
-
-		editGadgetButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				int row = gadgetsTable.getSelectedRow();
-				Gadget gadget = (Gadget) gadgetTableModel.getGadget(row);
-				GadgetDetailFrame window = new GadgetDetailFrame(gadget, library, false);
-			}
-		});
 		
-		JPanel ausleihenTab = new JPanel();
-		tabbedPane.addTab("Ausleihen & Rückgabe", null, ausleihenTab, null);
+				editGadgetButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						int row = gadgetsTable.getSelectedRow();
+						Gadget gadget = (Gadget) gadgetTableModel.getGadget(row);
+						GadgetDetailFrame window = new GadgetDetailFrame(gadget, library, false);
+					}
+				});
 	}
 	
 	private void initTable(){

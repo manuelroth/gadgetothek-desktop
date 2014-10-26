@@ -12,7 +12,7 @@ public class App
     	EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					GadgetMasterFrame frame = new GadgetMasterFrame();
+					AppFrame frame = new AppFrame();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
