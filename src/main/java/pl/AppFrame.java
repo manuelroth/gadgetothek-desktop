@@ -27,7 +27,7 @@ public class AppFrame extends JFrame {
 		setContentPane(contentPane);
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		contentPane.add(tabbedPane, BorderLayout.NORTH);
+		contentPane.add(tabbedPane, BorderLayout.CENTER);
 		
 		JFrame gadgetMasterFrame = new GadgetMasterFrame(library);
 		tabbedPane.addTab("Gadgets", null, gadgetMasterFrame.getContentPane(), null);
