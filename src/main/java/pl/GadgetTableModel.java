@@ -32,8 +32,12 @@ public class GadgetTableModel extends AbstractTableModel implements Observer{
 	@Override
 	public void update(Observable obj, Object arg1) {
 		MessageData data = (MessageData) arg1;
-		if (data.getData() instanceof Gadget){
-			int pos = library.getGadgets().indexOf((Gadget)data.getData());
+		if(!data.getTarget().equals("gadget")) return;
+		
+		int pos = library.getGadgets().indexOf((Gadget)data.getData());
+		if(data.getType().equals("add")) {
+			fireTableRowsInserted(pos, pos);
+		} else if(data.getType().equals("update")) {
 			fireTableRowsUpdated(pos, pos);			
 		}
 	}
