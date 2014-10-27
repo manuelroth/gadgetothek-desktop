@@ -43,14 +43,6 @@ public class BorrowMasterFrame extends JFrame {
 		searchTextField.setText("Suchen...");
 		searchTextField.setColumns(10);
 		searchPanel.add(searchTextField);
-		
-		customerTable.setModel(new DefaultTableModel(
-			new Object[][] {
-			},
-			new String[] {
-				"KundenId", "Name", "Reservationen", "Ausleihen", "\u00DCberf\u00E4llige"
-			}
-		));
 		contentPane.add(customerTable, BorderLayout.WEST);
 	}
 	
