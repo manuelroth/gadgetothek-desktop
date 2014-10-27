@@ -1,8 +1,6 @@
 package pl;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -29,11 +27,11 @@ public class AppFrame extends JFrame {
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		contentPane.add(tabbedPane, BorderLayout.CENTER);
 		
-		JFrame gadgetMasterFrame = new GadgetMasterFrame(library);
-		tabbedPane.addTab("Gadgets", null, gadgetMasterFrame.getContentPane(), null);
+		JPanel gadgetMasterPanel = new GadgetMasterPanel(library);
+		tabbedPane.addTab("Gadgets", null, gadgetMasterPanel, null);
 		
-		JFrame borrowMasterFrame = new BorrowMasterFrame(library);
-		tabbedPane.addTab("Ausleihen & Rückgabe", null, borrowMasterFrame.getContentPane(), null);
+		JPanel borrowMasterPanel = new BorrowMasterPanel(library);
+		tabbedPane.addTab("Ausleihen & Rückgabe", null, borrowMasterPanel, null);
 	}
 
 }

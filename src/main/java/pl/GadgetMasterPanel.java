@@ -27,13 +27,7 @@ import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-public class GadgetMasterFrame extends JFrame {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
+public class GadgetMasterPanel extends JPanel {
 	private JTextField searchTextField;
     private JTable gadgetsTable = new JTable();
     private TableRowSorter<GadgetTableModel> sorter;
@@ -42,18 +36,15 @@ public class GadgetMasterFrame extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public GadgetMasterFrame(Library library) {
+	public GadgetMasterPanel(Library library) {
 		gadgetTableModel = new GadgetTableModel(library);
-		
-		setTitle("Gadgets Biblio");
+
 		setMinimumSize(new Dimension(540, 340));
 		setSize(new Dimension(540, 340));
 		setBounds(100, 100, 450, 300);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		initTable();
 		
 		JPanel gadgetsPanel = new JPanel();
-		getContentPane().add(gadgetsPanel, BorderLayout.NORTH);
 		gadgetsPanel.setLayout(new GridLayout(1, 0, 0, 0));
 		searchTextField = new JTextField();
 		searchTextField.setText("Suchen...");
@@ -104,6 +95,7 @@ public class GadgetMasterFrame extends JFrame {
 		
 		JPanel buttonPanel = new JPanel();
 		gadgetsPanel.add(buttonPanel);
+		add(gadgetsPanel);
 		buttonPanel.setLayout(new GridLayout(1, 0, 0, 0));
 		
 		JButton newGadgetButton = new JButton("Gadget erfassen");
@@ -119,9 +111,8 @@ public class GadgetMasterFrame extends JFrame {
 		editGadgetButton.setEnabled(false);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		getContentPane().add(scrollPane, BorderLayout.SOUTH);
 		scrollPane.setViewportView(gadgetsTable);
-		scrollPane.setViewportView(gadgetsTable);
+		add(scrollPane);
 		gadgetsTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			
 			@Override
