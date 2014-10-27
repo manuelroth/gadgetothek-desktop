@@ -10,6 +10,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.RowFilter;
+import javax.swing.RowFilter.ComparisonType;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableRowSorter;
@@ -17,8 +19,13 @@ import javax.swing.JButton;
 
 import bl.Gadget;
 import bl.Library;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 public class GadgetMasterFrame extends JFrame {
 
@@ -53,6 +60,47 @@ public class GadgetMasterFrame extends JFrame {
 		searchTextField.setToolTipText("Suchen...");
 		gadgetsPanel.add(searchTextField);
 		searchTextField.setColumns(10);
+		
+		searchTextField.addFocusListener(new FocusListener()
+		{
+			@Override
+			public void focusGained(FocusEvent e) {
+				searchTextField.setText("");
+			}
+
+			@Override
+			public void focusLost(FocusEvent e) {				
+			}			
+		});
+		searchTextField.addKeyListener(new KeyListener() {
+			@Override
+			public void keyPressed(KeyEvent arg0) {
+			}
+
+			@Override
+			public void keyReleased(KeyEvent arg0) {
+				if (searchTextField.getText().length() != 0)
+				{
+					sorter = (TableRowSorter<GadgetTableModel>) gadgetsTable.getRowSorter();
+					try  
+			    	{  
+						Integer searchParameter = Integer.parseInt(searchTextField.getText());			         
+						sorter.setRowFilter(RowFilter.numberFilter(ComparisonType.EQUAL, searchParameter, 0, 3));
+			    	} 
+					catch(NumberFormatException nfe)  
+			    	{  					
+						sorter.setRowFilter(RowFilter.regexFilter("(?i)" + searchTextField.getText(), 1, 2, 4)); 
+			    	}  
+				}
+				else
+					sorter.setRowFilter(null);
+			}
+
+			@Override
+			public void keyTyped(KeyEvent arg0) {
+			}
+		});
+		
 		
 		JPanel buttonPanel = new JPanel();
 		gadgetsPanel.add(buttonPanel);
@@ -96,6 +144,6 @@ public class GadgetMasterFrame extends JFrame {
 		gadgetsTable.setModel(gadgetTableModel);
 		
 		sorter = new TableRowSorter<GadgetTableModel>(gadgetTableModel);
-		gadgetsTable.setRowSorter(sorter);
+		gadgetsTable.setRowSorter(sorter);	
 	}
 }
