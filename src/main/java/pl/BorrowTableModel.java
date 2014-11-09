@@ -47,9 +47,9 @@ public class BorrowTableModel extends AbstractTableModel implements Observer{
 	@Override
 	public void update(Observable obj, Object arg1) {
 		MessageData data = (MessageData) arg1;
-		if(!data.getTarget().equals("reservation")) return;
+		if(!data.getTarget().equals("loan")) return;
 		
-		int pos = library.getGadgets().indexOf((Gadget)data.getData());
+		int pos = library.getLoansFor(dummyCustomer, true).indexOf((Loan)data.getData());
 		if(data.getType().equals("add")) {
 			fireTableRowsInserted(pos, pos);
 		} else if(data.getType().equals("update")) {

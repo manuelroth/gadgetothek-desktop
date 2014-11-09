@@ -1,5 +1,7 @@
 package pl;
 
+import java.util.Date;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -8,6 +10,7 @@ import javax.swing.table.AbstractTableModel;
 import dl.MessageData;
 import bl.Library;
 import bl.Gadget;
+import bl.Loan;
 
 public class GadgetTableModel extends AbstractTableModel implements Observer{
 	
@@ -55,6 +58,8 @@ public class GadgetTableModel extends AbstractTableModel implements Observer{
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		Gadget gadget = library.getGadgets().get(rowIndex);
+		List<Loan> list = library.getLoansFor(gadget, true);
+
 		switch(columnIndex){
 		case 0:
 			return gadget.getInventoryNumber();
@@ -66,6 +71,18 @@ public class GadgetTableModel extends AbstractTableModel implements Observer{
 			return gadget.getPrice();
 		case 4:
 			return gadget.getCondition();
+		case 5:
+			if(list.isEmpty()){
+				return new Date().toLocaleString();
+			}else{
+				return list.get(0).overDueDate().toLocaleString();
+			}
+		case 6:
+			if(list.isEmpty()){
+				return null;
+			}else{
+				return library.getCustomer(list.get(0).getCustomerId()).getName();
+			}
 		default:
 			return null;
 		}

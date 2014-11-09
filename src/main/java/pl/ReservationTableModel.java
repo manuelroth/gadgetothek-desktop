@@ -47,7 +47,7 @@ public class ReservationTableModel extends AbstractTableModel implements Observe
 		MessageData data = (MessageData) arg1;
 		if(!data.getTarget().equals("reservation")) return;
 		
-		int pos = library.getGadgets().indexOf((Gadget)data.getData());
+		int pos = library.getReservatonFor(dummyCustomer, true).indexOf((Reservation)data.getData());
 		if(data.getType().equals("add")) {
 			fireTableRowsInserted(pos, pos);
 		} else if(data.getType().equals("update")) {

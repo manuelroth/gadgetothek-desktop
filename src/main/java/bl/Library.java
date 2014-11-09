@@ -24,6 +24,24 @@ public class Library extends Observable{
 				doNotify(message);
 			}
 		});
+		data.registerCustomerListener(new CrudListener<Customer>() {
+			@Override
+			public void changed(MessageData message) {
+				doNotify(message);
+			}
+		});
+		data.registerLoanListener(new CrudListener<Loan>() {
+			@Override
+			public void changed(MessageData message) {
+				doNotify(message);
+			}
+		});
+		data.registerReservationListener(new CrudListener<Reservation>() {
+			@Override
+			public void changed(MessageData message) {
+				doNotify(message);
+			}
+		});
 	}
 
 	
