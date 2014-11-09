@@ -16,6 +16,7 @@ public class App
 					AppFrame frame = new AppFrame();
 					frame.setVisible(true);
 					frame.setMinimumSize(new Dimension(900, 360));
+					frame.setMaximumSize(new Dimension(900, 450));
 
 				} catch (Exception e) {
 					e.printStackTrace();

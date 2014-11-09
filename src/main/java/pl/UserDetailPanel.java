@@ -35,6 +35,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.Box;
+import java.awt.FlowLayout;
 
 public class UserDetailPanel extends JPanel{
 	private static final long serialVersionUID = 1L;
@@ -71,20 +72,28 @@ public class UserDetailPanel extends JPanel{
 		
 		JPanel NewReservationPanel = new JPanel();
 		add(NewReservationPanel);
-		NewReservationPanel.setLayout(new BorderLayout(0, 0));
+		NewReservationPanel.setLayout(new GridLayout(0, 1, 0, 0));
+		
+		JPanel labelPanel = new JPanel();
+		NewReservationPanel.add(labelPanel);
+		labelPanel.setLayout(new BoxLayout(labelPanel, BoxLayout.X_AXIS));
 		
 		JLabel newReservationLabel = new JLabel("Neue Reservation");
-		NewReservationPanel.add(newReservationLabel, BorderLayout.NORTH);
+		labelPanel.add(newReservationLabel);
+		
+		JPanel textFieldPanel = new JPanel();
+		NewReservationPanel.add(textFieldPanel);
+		textFieldPanel.setLayout(new BorderLayout(0, 0));
 		
 		JLabel reservationIdLabel = new JLabel("Id");
-		NewReservationPanel.add(reservationIdLabel, BorderLayout.WEST);
+		textFieldPanel.add(reservationIdLabel, BorderLayout.WEST);
 		
 		newReservationTextField = new JTextField();
-		NewReservationPanel.add(newReservationTextField);
+		textFieldPanel.add(newReservationTextField, BorderLayout.CENTER);
 		newReservationTextField.setColumns(10);
 		
 		JButton newReservationButton = new JButton("Reservation");
-		NewReservationPanel.add(newReservationButton, BorderLayout.EAST);
+		textFieldPanel.add(newReservationButton, BorderLayout.EAST);
 		newReservationButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -93,15 +102,15 @@ public class UserDetailPanel extends JPanel{
 			}
 		});
 		
-		JPanel panel = new JPanel();
-		NewReservationPanel.add(panel, BorderLayout.SOUTH);
-		panel.setLayout(new BorderLayout(0, 0));
+		JPanel validationPanel = new JPanel();
+		NewReservationPanel.add(validationPanel);
+		validationPanel.setLayout(new BorderLayout(0, 0));
 		
 		JLabel reservationValidationLabel = new JLabel();
-		panel.add(reservationValidationLabel, BorderLayout.CENTER);
+		validationPanel.add(reservationValidationLabel, BorderLayout.CENTER);
 		
 		Component horizontalStrut = Box.createHorizontalStrut(20);
-		panel.add(horizontalStrut, BorderLayout.WEST);
+		validationPanel.add(horizontalStrut, BorderLayout.WEST);
 		
 		JPanel BorrowTablePanel = new JPanel();
 		add(BorrowTablePanel);
@@ -117,20 +126,40 @@ public class UserDetailPanel extends JPanel{
 		
 		JPanel NewBorrowPanel = new JPanel();
 		add(NewBorrowPanel);
-		NewBorrowPanel.setLayout(new BorderLayout(0, 0));
+		NewBorrowPanel.setLayout(new GridLayout(0, 1, 0, 0));
+		
+		JPanel labelPanel1 = new JPanel();
+		NewBorrowPanel.add(labelPanel1);
+		labelPanel1.setLayout(new BoxLayout(labelPanel1, BoxLayout.X_AXIS));
 		
 		JLabel newBorrowLabel = new JLabel("Neue Ausleihe");
-		NewBorrowPanel.add(newBorrowLabel, BorderLayout.NORTH);
+		labelPanel1.add(newBorrowLabel);
 		
-		JLabel borrowIdLabel = new JLabel("id");
-		NewBorrowPanel.add(borrowIdLabel, BorderLayout.WEST);
+		JPanel textFieldPanel1 = new JPanel();
+		NewBorrowPanel.add(textFieldPanel1);
+		textFieldPanel1.setLayout(new BorderLayout(0, 0));
+		
+		JLabel borrowIdLabel = new JLabel("Id");
+		textFieldPanel1.add(borrowIdLabel, BorderLayout.WEST);
 		
 		newBorrowTextField = new JTextField();
-		NewBorrowPanel.add(newBorrowTextField, BorderLayout.CENTER);
+		textFieldPanel1.add(newBorrowTextField, BorderLayout.CENTER);
 		newBorrowTextField.setColumns(10);
 		
 		JButton newBorrowButton = new JButton("Ausleihen");
-		NewBorrowPanel.add(newBorrowButton, BorderLayout.EAST);
+		textFieldPanel1.add(newBorrowButton, BorderLayout.EAST);
+		
+		JPanel validationPanel1 = new JPanel();
+		NewBorrowPanel.add(validationPanel1);
+		validationPanel1.setLayout(new BorderLayout(0, 0));
+		
+		JLabel borrowValidationLabel = new JLabel();
+		borrowValidationLabel.setVerticalAlignment(SwingConstants.TOP);
+		borrowValidationLabel.setHorizontalAlignment(SwingConstants.LEFT);
+		validationPanel1.add(borrowValidationLabel);
+		
+		Component horizontalStrut_1 = Box.createHorizontalStrut(20);
+		validationPanel1.add(horizontalStrut_1, BorderLayout.WEST);
 		newBorrowButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -138,15 +167,6 @@ public class UserDetailPanel extends JPanel{
 				library.addLoan(gadget, customer);
 			}
 		});
-		
-		JPanel panel_1 = new JPanel();
-		NewBorrowPanel.add(panel_1, BorderLayout.SOUTH);
-		panel_1.setLayout(new BorderLayout(0, 0));
-		
-		JLabel borrowValidationLabel = new JLabel();
-		borrowValidationLabel.setVerticalAlignment(SwingConstants.TOP);
-		borrowValidationLabel.setHorizontalAlignment(SwingConstants.LEFT);
-		panel_1.add(borrowValidationLabel);
 		
 		for(Loan loan :library.getLoansFor(customer, true)){
 			if(loan.isOverdue()){
@@ -156,9 +176,6 @@ public class UserDetailPanel extends JPanel{
 				newBorrowButton.setEnabled(false);
 			}
 		}
-		
-		Component horizontalStrut_1 = Box.createHorizontalStrut(20);
-		panel_1.add(horizontalStrut_1, BorderLayout.WEST);
 	}
 	
 	void initReservationTable(Library library){
