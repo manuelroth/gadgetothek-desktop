@@ -91,11 +91,12 @@ public class GadgetMasterPanel extends JPanel {
 			public void keyTyped(KeyEvent arg0) {
 			}
 		});
+		setLayout(new BorderLayout(0, 0));
 		
 		
 		JPanel buttonPanel = new JPanel();
 		gadgetsPanel.add(buttonPanel);
-		add(gadgetsPanel);
+		add(gadgetsPanel, BorderLayout.NORTH);
 		buttonPanel.setLayout(new GridLayout(1, 0, 0, 0));
 		
 		JButton newGadgetButton = new JButton("Gadget erfassen");
