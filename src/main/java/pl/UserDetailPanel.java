@@ -7,14 +7,11 @@ import bl.Customer;
 import bl.Gadget;
 import bl.Library;
 import bl.Loan;
-import bl.Reservation;
 
 import javax.swing.border.TitledBorder;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 import javax.swing.BoxLayout;
-import javax.swing.CellRendererPane;
 import javax.swing.JLabel;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
@@ -30,12 +27,17 @@ import java.awt.GridLayout;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 import javax.swing.Box;
-import java.awt.FlowLayout;
+
+import pl.validation.ErrorUserTextField;
+import pl.validation.TextFieldGadgetIdValidator;
+
 
 public class UserDetailPanel extends JPanel{
 	private static final long serialVersionUID = 1L;
@@ -47,10 +49,17 @@ public class UserDetailPanel extends JPanel{
     private TableRowSorter<BorrowTableModel> borrowSorter;
     private BorrowTableModel borrowTableModel;
     private JTextField newBorrowTextField;
+    private JButton newBorrowButton;
+    private JButton newReservationButton;
+    private JLabel borrowValidationLabel;
+    private JLabel reservationValidationLabel;
     private Customer customer;
 	
 	public UserDetailPanel(Library library){	
 		customer = library.getCustomers().get(0);
+		KeyListener borrowChecker =  new CheckBorrowKeyListener();
+		KeyListener reservationChecker =  new CheckReservationKeyListener();
+
 		TitledBorder title = BorderFactory.createTitledBorder(customer.getName());
 		setBorder(title);
 		setLayout(new GridLayout(0, 1, 0, 0));
@@ -88,11 +97,12 @@ public class UserDetailPanel extends JPanel{
 		JLabel reservationIdLabel = new JLabel("Id");
 		textFieldPanel.add(reservationIdLabel, BorderLayout.WEST);
 		
-		newReservationTextField = new JTextField();
+		newReservationTextField = new ErrorUserTextField(new TextFieldGadgetIdValidator());
+		newReservationTextField.addKeyListener(reservationChecker);
 		textFieldPanel.add(newReservationTextField, BorderLayout.CENTER);
 		newReservationTextField.setColumns(10);
 		
-		JButton newReservationButton = new JButton("Reservation");
+		newReservationButton = new JButton("Reservation");
 		textFieldPanel.add(newReservationButton, BorderLayout.EAST);
 		newReservationButton.addActionListener(new ActionListener() {
 			@Override
@@ -106,7 +116,7 @@ public class UserDetailPanel extends JPanel{
 		NewReservationPanel.add(validationPanel);
 		validationPanel.setLayout(new BorderLayout(0, 0));
 		
-		JLabel reservationValidationLabel = new JLabel();
+		reservationValidationLabel = new JLabel();
 		validationPanel.add(reservationValidationLabel, BorderLayout.CENTER);
 		
 		Component horizontalStrut = Box.createHorizontalStrut(20);
@@ -142,18 +152,19 @@ public class UserDetailPanel extends JPanel{
 		JLabel borrowIdLabel = new JLabel("Id");
 		textFieldPanel1.add(borrowIdLabel, BorderLayout.WEST);
 		
-		newBorrowTextField = new JTextField();
+		newBorrowTextField = new ErrorUserTextField(new TextFieldGadgetIdValidator());
+		newBorrowTextField.addKeyListener(borrowChecker);
 		textFieldPanel1.add(newBorrowTextField, BorderLayout.CENTER);
 		newBorrowTextField.setColumns(10);
 		
-		JButton newBorrowButton = new JButton("Ausleihen");
+		newBorrowButton = new JButton("Ausleihen");
 		textFieldPanel1.add(newBorrowButton, BorderLayout.EAST);
 		
 		JPanel validationPanel1 = new JPanel();
 		NewBorrowPanel.add(validationPanel1);
 		validationPanel1.setLayout(new BorderLayout(0, 0));
 		
-		JLabel borrowValidationLabel = new JLabel();
+		borrowValidationLabel = new JLabel();
 		borrowValidationLabel.setVerticalAlignment(SwingConstants.TOP);
 		borrowValidationLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		validationPanel1.add(borrowValidationLabel);
@@ -164,6 +175,11 @@ public class UserDetailPanel extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Gadget gadget = library.getGadget(newBorrowTextField.getText());
+				if(gadget == null){
+					newBorrowButton.setToolTipText("Please check the gadgetId(consists of 19 numbers)");
+					newBorrowButton.setEnabled(false);
+					newBorrowButton.repaint();
+				}
 				library.addLoan(gadget, customer);
 			}
 		});
@@ -172,7 +188,7 @@ public class UserDetailPanel extends JPanel{
 			if(loan.isOverdue()){
 				reservationValidationLabel.setText("Keine Reservation möglich: Überfällige vorhanden");
 				newReservationButton.setEnabled(false);
-				newBorrowTextField.setText("Keine Ausleihe möglich: Überfällige vorhanden");
+				borrowValidationLabel.setText("Keine Ausleihe möglich: Überfällige vorhanden");
 				newBorrowButton.setEnabled(false);
 			}
 		}
@@ -235,4 +251,30 @@ public class UserDetailPanel extends JPanel{
             return button;  
         }
     }
+	
+	public class CheckBorrowKeyListener extends KeyAdapter {
+		@Override
+		public void keyReleased(KeyEvent arg0) {
+			if(newBorrowTextField.isValid()){
+				newBorrowButton.setToolTipText("Ausleihen");
+				newBorrowButton.setEnabled(true);
+			}else{
+				newBorrowButton.setToolTipText("Please check the gadgetId(consists of 19 numbers)");
+				newBorrowButton.setEnabled(false);
+			}
+		}	
+	}
+	
+	public class CheckReservationKeyListener extends KeyAdapter {
+		@Override
+		public void keyReleased(KeyEvent arg0) {
+			if(newReservationTextField.isValid()){
+				newReservationButton.setToolTipText("Reservation");
+				newReservationButton.setEnabled(true);
+			}else{
+				newReservationButton.setToolTipText("Please check the gadgetId(consists of 19 numbers)");
+				newReservationButton.setEnabled(false);
+			}
+		}	
+	}
 }

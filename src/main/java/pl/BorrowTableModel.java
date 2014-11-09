@@ -76,9 +76,9 @@ public class BorrowTableModel extends AbstractTableModel implements Observer{
 		case 0:
 			return gadget.getName();
 		case 1:
-			return loan.getPickupDate();
+			return loan.getPickupDate().toLocaleString();
 		case 2:
-			return loan.getReturnDate();
+			return loan.overDueDate().toLocaleString();
 		case 3:
 			if(loan.isOverdue()){
 				return true;
