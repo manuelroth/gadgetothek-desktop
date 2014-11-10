@@ -48,15 +48,15 @@ public class UserDetailPanel extends JPanel{
     private JTable borrowTable;
     private TableRowSorter<BorrowTableModel> borrowSorter;
     private BorrowTableModel borrowTableModel;
-    private JTextField newBorrowTextField;
+    private JTextField newBorrowTextField;	
     private JButton newBorrowButton;
     private JButton newReservationButton;
     private JLabel borrowValidationLabel;
     private JLabel reservationValidationLabel;
     private Customer customer;
 	
-	public UserDetailPanel(Library library){	
-		customer = library.getCustomers().get(0);
+	public UserDetailPanel(Library library, Customer  customer){	
+		this.setCustomer(customer);
 		KeyListener borrowChecker =  new CheckBorrowKeyListener();
 		KeyListener reservationChecker =  new CheckReservationKeyListener();
 
@@ -253,6 +253,15 @@ public class UserDetailPanel extends JPanel{
 		});
 	}
 	
+	public Customer getCustomer() {
+		return customer;
+	}
+
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
+		this.repaint();
+	}
+
 	private static class JTableButtonRenderer implements TableCellRenderer {        
         @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
             JButton button = (JButton)value;

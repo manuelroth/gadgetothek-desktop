@@ -18,6 +18,7 @@ import javax.swing.RowFilter.ComparisonType;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.TableRowSorter;
 
+import bl.Customer;
 import bl.Library;
 
 public class UserMasterPanel extends JPanel {
@@ -25,8 +26,13 @@ public class UserMasterPanel extends JPanel {
     private TableRowSorter<CustomerTableModel> sorter;
     private JTextField searchTextField;
     private JTable customerTable = new JTable();
+	private BorrowMasterPanel masterPanel;
+	private Library library;
 
-	public UserMasterPanel(Library library) {
+	public UserMasterPanel(Library library, BorrowMasterPanel masterPanel) {
+		this.library = library;
+		this.masterPanel = masterPanel;
+		
 		customerTableModel = new CustomerTableModel(library);
 		setBounds(100, 100, 450, 300);
 		setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -83,6 +89,22 @@ public class UserMasterPanel extends JPanel {
 	private void initTable(){
 		customerTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		customerTable.setModel(customerTableModel);
+		
+		customerTable.addFocusListener(new FocusListener() {
+			@Override
+			public void focusLost(FocusEvent arg0) {
+				
+			}
+			
+			@Override
+			public void focusGained(FocusEvent arg0) {
+				JTable table = (JTable)arg0.getComponent();
+				Customer customer = library.getCustomers().get(table.getSelectedRow());		
+				
+				
+				masterPanel.setCurrentUserPanel(new UserDetailPanel(library, customer));
+			}
+		});
 		
 		sorter = new TableRowSorter<CustomerTableModel>(customerTableModel);
 		customerTable.setRowSorter(sorter);
