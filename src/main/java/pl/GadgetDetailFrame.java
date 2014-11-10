@@ -274,6 +274,12 @@ public class GadgetDetailFrame {
 			checkSaveable();
 		}	
 	}
+	
+	public void setFocus(Boolean visible)
+	{
+		frame.setVisible(visible);
+		frame.requestFocus();
+	}
 
 	void updateAllAttributs() {
 		gadget.setName(nameField.getText());

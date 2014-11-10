@@ -194,9 +194,9 @@ public class UserDetailPanel extends JPanel{
 		
 		for(Loan loan :library.getLoansFor(customer, true)){
 			if(loan.isOverdue()){
-				reservationValidationLabel.setText("Keine Reservation möglich: Überfällige vorhanden");
+				reservationValidationLabel.setText("Keine Reservation moeglich: Ueberfaellige vorhanden");
 				newReservationButton.setEnabled(false);
-				borrowValidationLabel.setText("Keine Ausleihe möglich: Überfällige vorhanden");
+				borrowValidationLabel.setText("Keine Ausleihe moeglich: Ueberfaellige vorhanden");
 				newBorrowButton.setEnabled(false);
 			}
 		}
@@ -211,7 +211,7 @@ public class UserDetailPanel extends JPanel{
 		reservationTable.setRowSorter(reservationSorter);
 		TableCellRenderer buttonRenderer = new JTableButtonRenderer();
 		reservationTable.getColumn("Ausleihen").setCellRenderer(buttonRenderer);
-		reservationTable.getColumn("Löschen").setCellRenderer(buttonRenderer);
+		reservationTable.getColumn("Loeschen").setCellRenderer(buttonRenderer);
 		reservationTable.addMouseListener(new MouseAdapter() {
 			
 			@Override
@@ -236,7 +236,7 @@ public class UserDetailPanel extends JPanel{
 		borrowTable.setModel(borrowTableModel);
 		borrowTable.setRowSorter(borrowSorter);	
 		TableCellRenderer buttonRenderer = new JTableButtonRenderer();
-		borrowTable.getColumn("Rücknahme").setCellRenderer(buttonRenderer);
+		borrowTable.getColumn("Ruecknahme").setCellRenderer(buttonRenderer);
 		borrowTable.addMouseListener(new MouseAdapter() {
 			
 			@Override

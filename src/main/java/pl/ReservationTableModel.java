@@ -18,7 +18,7 @@ import bl.Reservation;
 public class ReservationTableModel extends AbstractTableModel implements Observer{
 	
 	private static final long serialVersionUID = 1L;
-	private String[] columnNames = {"Name", "Warteschlange", "Ausleihen", "Löschen"};
+	private String[] columnNames = {"Name", "Warteschlange", "Ausleihen", "Loeschen"};
 	private Class<?>[] columnTypes = new Class<?>[] {String.class, Integer.class, JButton.class, JButton.class};
 	private Library library;
 	private Customer dummyCustomer;
@@ -88,7 +88,7 @@ public class ReservationTableModel extends AbstractTableModel implements Observe
 			});
 			return ausleihenButton;
 		case 3:
-			final JButton deleteButton = new JButton("Löschen");
+			final JButton deleteButton = new JButton("Loeschen");
 			deleteButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
