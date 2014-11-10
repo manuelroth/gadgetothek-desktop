@@ -21,13 +21,13 @@ public class ReservationTableModel extends AbstractTableModel implements Observe
 	private String[] columnNames = {"Name", "Warteschlange", "Ausleihen", "Loeschen"};
 	private Class<?>[] columnTypes = new Class<?>[] {String.class, Integer.class, JButton.class, JButton.class};
 	private Library library;
-	private Customer dummyCustomer;
+	private Customer customer;
 
 	
-	public ReservationTableModel(Library library){
+	public ReservationTableModel(Library library, Customer customer){
 		this.library=library;
 		library.addObserver(this);
-		dummyCustomer = library.getCustomers().get(1);
+		this.customer = customer;
 	}
 	
 	public void propagateUpdate(int pos) {
@@ -47,7 +47,7 @@ public class ReservationTableModel extends AbstractTableModel implements Observe
 		MessageData data = (MessageData) arg1;
 		if(!data.getTarget().equals("reservation")) return;
 		
-		int pos = library.getReservatonFor(dummyCustomer, true).indexOf((Reservation)data.getData());
+		int pos = library.getReservatonFor(customer, true).indexOf((Reservation)data.getData());
 		if(data.getType().equals("add")) {
 			fireTableRowsInserted(pos, pos);
 		} else if(data.getType().equals("update")) {
@@ -57,7 +57,7 @@ public class ReservationTableModel extends AbstractTableModel implements Observe
 
 	@Override
 	public int getRowCount() {
-		return library.getReservatonFor(dummyCustomer, true).size();
+		return library.getReservatonFor(customer, true).size();
 	}
 
 	@Override
@@ -67,7 +67,7 @@ public class ReservationTableModel extends AbstractTableModel implements Observe
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		Reservation reservation = library.getReservatonFor(dummyCustomer, true).get(rowIndex);
+		Reservation reservation = library.getReservatonFor(customer, true).get(rowIndex);
 		Gadget gadget = library.getGadget(reservation.getGadgetId());
 		switch(columnIndex){
 		case 0:
@@ -83,7 +83,7 @@ public class ReservationTableModel extends AbstractTableModel implements Observe
 			ausleihenButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					library.addLoan(gadget, dummyCustomer);
+					library.addLoan(gadget, customer);
 				}
 			});
 			return ausleihenButton;

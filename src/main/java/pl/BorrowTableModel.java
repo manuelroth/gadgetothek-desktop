@@ -24,12 +24,12 @@ public class BorrowTableModel extends AbstractTableModel implements Observer{
 	private String[] columnNames = {"Name", "Ausgeliehen am", "Zurueck bis", "Faellig", "Reserviert", "Ruecknahme"};
 	private Class<?>[] columnTypes = new Class<?>[] {String.class, String.class, String.class, Boolean.class, Boolean.class, JButton.class};
 	private Library library;
-	private Customer dummyCustomer;
+	private Customer customer;
 	
-	public BorrowTableModel(Library library){
+	public BorrowTableModel(Library library, Customer customer){
 		this.library=library;
 		library.addObserver(this);
-		dummyCustomer = library.getCustomers().get(0);
+		this.customer = customer;
 	}
 	
 	public void propagateUpdate(int pos) {
@@ -49,7 +49,7 @@ public class BorrowTableModel extends AbstractTableModel implements Observer{
 		MessageData data = (MessageData) arg1;
 		if(!data.getTarget().equals("loan")) return;
 		
-		int pos = library.getLoansFor(dummyCustomer, true).indexOf((Loan)data.getData());
+		int pos = library.getLoansFor(customer, true).indexOf((Loan)data.getData());
 		if(data.getType().equals("add")) {
 			fireTableRowsInserted(pos, pos);
 		} else if(data.getType().equals("update")) {
@@ -59,7 +59,7 @@ public class BorrowTableModel extends AbstractTableModel implements Observer{
 
 	@Override
 	public int getRowCount() {
-		return library.getLoansFor(dummyCustomer, true).size();
+		return library.getLoansFor(customer, true).size();
 	}
 
 	@Override
@@ -69,7 +69,7 @@ public class BorrowTableModel extends AbstractTableModel implements Observer{
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		Loan loan = library.getLoansFor(dummyCustomer, true).get(rowIndex);
+		Loan loan = library.getLoansFor(customer, true).get(rowIndex);
 		Gadget gadget = library.getGadget(loan.getGadgetId());
 		
 		switch(columnIndex){

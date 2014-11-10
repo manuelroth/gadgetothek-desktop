@@ -203,7 +203,7 @@ public class UserDetailPanel extends JPanel{
 	}
 	
 	void initReservationTable(Library library){
-		reservationTableModel = new ReservationTableModel(library);
+		reservationTableModel = new ReservationTableModel(library, this.customer);
 		reservationTable = new JTable();
 		reservationTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		reservationTable.setModel(reservationTableModel);
@@ -230,7 +230,7 @@ public class UserDetailPanel extends JPanel{
 	
 	void initBorrowTable(Library library){
 		borrowTable = new JTable();
-		borrowTableModel = new BorrowTableModel(library);
+		borrowTableModel = new BorrowTableModel(library, this.customer);
 		borrowSorter = new TableRowSorter<BorrowTableModel>(borrowTableModel);
 		borrowTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		borrowTable.setModel(borrowTableModel);
