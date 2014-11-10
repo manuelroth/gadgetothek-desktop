@@ -17,7 +17,7 @@ import bl.Reservation;
 public class CustomerTableModel extends AbstractTableModel implements Observer{
 	
 	private static final long serialVersionUID = 1L;
-	private String[] columnNames = {"KundenId", "Name", "Reservationen", "Ausleihen", "�berf�llige"};
+	private String[] columnNames = {"KundenId", "Name", "Reservationen", "Ausleihen", "Ueberfaellige"};
 	private Library library;
 
 	
