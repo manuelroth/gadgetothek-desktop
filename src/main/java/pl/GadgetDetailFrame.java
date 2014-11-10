@@ -35,6 +35,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 public class GadgetDetailFrame {
 
@@ -217,6 +219,42 @@ public class GadgetDetailFrame {
 					frame.dispose();
 				}
 			}
+		});
+		
+		frame.addKeyListener(new KeyListener() {
+
+			@Override
+			public void keyPressed(KeyEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void keyReleased(KeyEvent arg0) {
+				switch (arg0.getKeyCode())
+				{
+				case KeyEvent.VK_ENTER:
+					if (saveButton.isEnabled() && nameField.isValid() && manufacturerField.isValid()) {
+						updateAllAttributs();
+						if (isNewGadget) {
+							library.addGadget(gadget);
+						} else {
+							library.updateGadget(gadget);
+						}
+						frame.dispose();
+					}
+					break;
+				case KeyEvent.VK_ESCAPE:
+					frame.dispose();
+					break;
+				}
+			}
+
+			@Override
+			public void keyTyped(KeyEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}			
 		});
 	}
 

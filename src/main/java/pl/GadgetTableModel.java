@@ -15,7 +15,7 @@ import bl.Loan;
 public class GadgetTableModel extends AbstractTableModel implements Observer{
 	
 	private static final long serialVersionUID = 1L;
-	private String[] columnNames = {"Id", "Name", "Hersteller", "Preis", "Zustand", "VerfÃ¼gbar ab", "Ausgeliehen an"};
+	private String[] columnNames = {"Id", "Name", "Hersteller", "Preis", "Zustand", "Verfügbar ab", "Ausgeliehen an"};
 	private Library library;
 
 	

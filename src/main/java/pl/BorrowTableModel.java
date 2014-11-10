@@ -21,7 +21,7 @@ import bl.Reservation;
 public class BorrowTableModel extends AbstractTableModel implements Observer{
 	
 	private static final long serialVersionUID = 1L;
-	private String[] columnNames = {"Name", "Ausgeliehen am", "ZurÃ¼ck bis", "FÃ¤llig", "Reserviert", "RÃ¼cknahme"};
+	private String[] columnNames = {"Name", "Ausgeliehen am", "Zurück bis", "Fällig", "Reserviert", "Rücknahme"};
 	private Class<?>[] columnTypes = new Class<?>[] {String.class, String.class, String.class, Boolean.class, Boolean.class, JButton.class};
 	private Library library;
 	private Customer dummyCustomer;
@@ -90,7 +90,7 @@ public class BorrowTableModel extends AbstractTableModel implements Observer{
 			}
 			return true;
 		case 5:
-			final JButton returnButton = new JButton("RÃ¼ckgabe");
+			final JButton returnButton = new JButton("Rückgabe");
 			returnButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {

@@ -32,7 +32,7 @@ public class AppFrame extends JFrame {
 		tabbedPane.addTab("Gadgets", null, gadgetMasterPanel, null);
 		
 		JPanel borrowMasterPanel = new BorrowMasterPanel(library);
-		tabbedPane.addTab("Ausleihen & RÃ¼ckgabe", null, borrowMasterPanel, null);
+		tabbedPane.addTab("Ausleihen & Rückgabe", null, borrowMasterPanel, null);
 	}
 
 }

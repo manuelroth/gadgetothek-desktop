@@ -32,6 +32,7 @@ public class GadgetMasterPanel extends JPanel {
     private JTable gadgetsTable = new JTable();
     private TableRowSorter<GadgetTableModel> sorter;
 	private GadgetTableModel gadgetTableModel;
+	GadgetDetailFrame gadgetDetailFrame = null;
 
 	/**
 	 * Create the frame.
@@ -103,7 +104,12 @@ public class GadgetMasterPanel extends JPanel {
 		buttonPanel.add(newGadgetButton);
 		newGadgetButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				GadgetDetailFrame window = new GadgetDetailFrame(new Gadget(), library, true);
+				//if (gadgetDetailFrame == null)
+					gadgetDetailFrame = new GadgetDetailFrame(new Gadget(), library, true);
+				/*else
+				{
+					gadgetDetailFrame.requestFocus();
+				}*/
 			}
 		});
 		
@@ -126,7 +132,12 @@ public class GadgetMasterPanel extends JPanel {
 					public void actionPerformed(ActionEvent e) {
 						int row = gadgetsTable.getSelectedRow();
 						Gadget gadget = (Gadget) gadgetTableModel.getGadget(row);
-						GadgetDetailFrame window = new GadgetDetailFrame(gadget, library, false);
+						//if (gadgetDetailFrame == null)
+							gadgetDetailFrame = new GadgetDetailFrame(gadget, library, false);
+						/*else
+						{							
+							gadgetDetailFrame.requestFocus();
+						}*/
 					}
 				});
 	}
