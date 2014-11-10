@@ -94,6 +94,9 @@ public class BorrowTableModel extends AbstractTableModel implements Observer{
 			returnButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
+					if(!library.getReservatonFor(gadget, true).isEmpty()){
+						JOptionPane.showMessageDialog(null, "Gadget is reserved by "+library.getCustomer(library.getReservatonFor(gadget, true).get(0).getCustomerId()));
+					}
 					loan.returnCopy();
 					propagateUpdate(rowIndex);
 				}

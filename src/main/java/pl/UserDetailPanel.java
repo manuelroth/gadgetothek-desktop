@@ -183,9 +183,22 @@ public class UserDetailPanel extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Gadget gadget = library.getGadget(newBorrowTextField.getText());
+				
+				boolean hasOverdue = false;
+				for (Loan loan : library.getLoansFor(customer, true)) {
+					if(loan.isOverdue()){
+						hasOverdue = true;
+					}
+				}
 				if(gadget == null){
 					newBorrowButton.setToolTipText("Please check the gadgetId(consists of 19 numbers)");
 					borrowValidationLabel.setText("Gadget with id: "+newBorrowTextField.getText()+" not available");
+				}else if(hasOverdue){
+					borrowValidationLabel.setText("Please return overdue gadgets, before borrowing a new gadget");
+				}else if(library.getLoansFor(customer, true).size() >= 3){
+					borrowValidationLabel.setText("You can not borrow more than three gadgets");
+				}else if(!library.getLoansFor(gadget, true).isEmpty()){
+					borrowValidationLabel.setText("Is already lent to "+library.getCustomer(library.getLoansFor(gadget, true).get(0).getCustomerId()));
 				}else{
 					library.addLoan(gadget, customer);
 				}
