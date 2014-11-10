@@ -94,11 +94,9 @@ public class BorrowTableModel extends AbstractTableModel implements Observer{
 			returnButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					JOptionPane.showMessageDialog(JOptionPane.getFrameForComponent(returnButton), 
-                            "Rücknahme Button clicked for row "+rowIndex);
-					//Delete reservation for gadget 
-					}
-				
+					loan.returnCopy();
+					propagateUpdate(rowIndex);
+				}
 			});
 			return returnButton;
 		default:

@@ -83,8 +83,6 @@ public class ReservationTableModel extends AbstractTableModel implements Observe
 			ausleihenButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					JOptionPane.showMessageDialog(JOptionPane.getFrameForComponent(ausleihenButton), 
-                            "Ausleihen Button clicked for row "+rowIndex);
 					library.addLoan(gadget, dummyCustomer);
 				}
 			});
@@ -94,10 +92,9 @@ public class ReservationTableModel extends AbstractTableModel implements Observe
 			deleteButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					JOptionPane.showMessageDialog(JOptionPane.getFrameForComponent(deleteButton), 
-                            "Löschen Button clicked for row "+rowIndex);
-					}
-				//ToDo delete Reservation
+					reservation.setFinished(true);
+					propagateUpdate(rowIndex);
+				}
 			});
 			return deleteButton;
 		default:

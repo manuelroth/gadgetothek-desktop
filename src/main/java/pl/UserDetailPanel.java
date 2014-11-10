@@ -103,6 +103,13 @@ public class UserDetailPanel extends JPanel{
 		textFieldPanel.add(newReservationTextField, BorderLayout.CENTER);
 		newReservationTextField.setColumns(10);
 		
+		JPanel validationPanel = new JPanel();
+		newReservationPanel.add(validationPanel);
+		validationPanel.setLayout(new BorderLayout(0, 0));
+		
+		reservationValidationLabel = new JLabel();
+		validationPanel.add(reservationValidationLabel, BorderLayout.CENTER);
+		
 		newReservationButton = new JButton("Reservation");
 		newReservationButton.setEnabled(false);
 		textFieldPanel.add(newReservationButton, BorderLayout.EAST);
@@ -112,19 +119,12 @@ public class UserDetailPanel extends JPanel{
 				Gadget gadget = library.getGadget(newReservationTextField.getText());
 				if(gadget == null){
 					newBorrowButton.setToolTipText("Please check the gadgetId(consists of 19 numbers)");
-					newBorrowButton.setEnabled(false);
-					newBorrowButton.repaint();
+					reservationValidationLabel.setText("Gadget with id: "+newReservationTextField.getText()+" not available");
+				}else{
+					library.addReservation(gadget, customer);
 				}
-				library.addReservation(gadget, customer);
 			}
 		});
-		
-		JPanel validationPanel = new JPanel();
-		newReservationPanel.add(validationPanel);
-		validationPanel.setLayout(new BorderLayout(0, 0));
-		
-		reservationValidationLabel = new JLabel();
-		validationPanel.add(reservationValidationLabel, BorderLayout.CENTER);
 		
 		Component horizontalStrut = Box.createHorizontalStrut(20);
 		validationPanel.add(horizontalStrut, BorderLayout.WEST);
@@ -185,10 +185,10 @@ public class UserDetailPanel extends JPanel{
 				Gadget gadget = library.getGadget(newBorrowTextField.getText());
 				if(gadget == null){
 					newBorrowButton.setToolTipText("Please check the gadgetId(consists of 19 numbers)");
-					newBorrowButton.setEnabled(false);
-					newBorrowButton.repaint();
+					borrowValidationLabel.setText("Gadget with id: "+newBorrowTextField.getText()+" not available");
+				}else{
+					library.addLoan(gadget, customer);
 				}
-				library.addLoan(gadget, customer);
 			}
 		});
 		
