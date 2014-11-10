@@ -108,7 +108,8 @@ public class GadgetMasterPanel extends JPanel {
 					gadgetDetailFrame = new GadgetDetailFrame(new Gadget(), library, true);
 				else
 				{
-					gadgetDetailFrame.setFocus(true);
+					gadgetDetailFrame = new GadgetDetailFrame(new Gadget(), library, true);
+					//gadgetDetailFrame.setFocus(true);
 				}
 			}
 		});
@@ -136,7 +137,8 @@ public class GadgetMasterPanel extends JPanel {
 							gadgetDetailFrame = new GadgetDetailFrame(gadget, library, false);
 						else
 						{
-							gadgetDetailFrame.setFocus(true);
+							gadgetDetailFrame = new GadgetDetailFrame(gadget, library, false);
+							//gadgetDetailFrame.setFocus(true);
 						}
 					}
 				});
