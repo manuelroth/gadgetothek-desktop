@@ -17,7 +17,7 @@ import bl.Reservation;
 public class CustomerTableModel extends AbstractTableModel implements Observer{
 	
 	private static final long serialVersionUID = 1L;
-	private String[] columnNames = {"KundenId", "Name", "Reservationen", "Ausleihen", "Überfällige"};
+	private String[] columnNames = {"KundenId", "Name", "Reservationen", "Ausleihen", "ï¿½berfï¿½llige"};
 	private Library library;
 
 	
@@ -37,8 +37,8 @@ public class CustomerTableModel extends AbstractTableModel implements Observer{
 	@Override
 	public void update(Observable obj, Object arg1) {
 		MessageData data = (MessageData) arg1;
-		if (data.getData() instanceof Gadget){
-			int pos = library.getGadgets().indexOf((Gadget)data.getData());
+		if (data.getData() instanceof Customer){
+			int pos = library.getCustomers().indexOf((Customer)data.getData());
 			fireTableRowsUpdated(pos, pos);			
 		}
 	}
