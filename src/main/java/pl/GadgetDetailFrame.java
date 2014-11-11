@@ -9,10 +9,16 @@ import javax.swing.JLabel;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 
+import javax.swing.AbstractAction;
+import javax.swing.ActionMap;
+import javax.swing.InputMap;
+import javax.swing.JComponent;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JButton;
+import javax.swing.KeyStroke;
 
 import java.awt.FlowLayout;
 
@@ -37,6 +43,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.WindowEvent;
 
 public class GadgetDetailFrame {
 
@@ -209,53 +216,22 @@ public class GadgetDetailFrame {
 		buttonPanel.add(saveButton);
 		saveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (nameField.isValid() && manufacturerField.isValid()) {
-					updateAllAttributs();
-					if (isNewGadget) {
-						library.addGadget(gadget);
-					} else {
-						library.updateGadget(gadget);
-					}
-					frame.dispose();
-				}
+				saveGadget();
 			}
 		});
 		
-		frame.addKeyListener(new KeyListener() {
-
-			@Override
-			public void keyPressed(KeyEvent arg0) {
-				// TODO Auto-generated method stub
-				
-			}
-
-			@Override
-			public void keyReleased(KeyEvent arg0) {
-				switch (arg0.getKeyCode())
-				{
-				case KeyEvent.VK_ENTER:
-					if (saveButton.isEnabled() && nameField.isValid() && manufacturerField.isValid()) {
-						updateAllAttributs();
-						if (isNewGadget) {
-							library.addGadget(gadget);
-						} else {
-							library.updateGadget(gadget);
-						}
-						frame.dispose();
-					}
-					break;
-				case KeyEvent.VK_ESCAPE:
-					frame.dispose();
-					break;
-				}
-			}
-
-			@Override
-			public void keyTyped(KeyEvent arg0) {
-				// TODO Auto-generated method stub
-				
-			}			
-		});
+		frame.getRootPane().setDefaultButton(saveButton);	
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		
+		int mapName = JComponent.WHEN_IN_FOCUSED_WINDOW; 
+		InputMap imap = frame.getRootPane().getInputMap();
+		imap.put(KeyStroke.getKeyStroke("ESCAPE"), "ESCAPE released");
+		//imap.put(KeyStroke.getKeyStroke("ENTER"), "ENTER released");
+		ActionMap amap = frame.getRootPane().getActionMap();		
+		amap.put("ENTER released", new AbstractAction() {
+		      public void actionPerformed(ActionEvent e) {
+		          saveGadget();
+		        }});				
 	}
 
 	private void checkSaveable() {
@@ -286,5 +262,18 @@ public class GadgetDetailFrame {
 		gadget.setPrice(Double.valueOf(priceField.getText()));
 		gadget.setCondition((Condition) conditionTextField.getSelectedItem());
 		gadget.setManufacturer(manufacturerField.getText());
+	}
+	
+	private void saveGadget()
+	{
+		if (saveButton.isEnabled() && nameField.isValid() && manufacturerField.isValid()) {
+			updateAllAttributs();
+			if (isNewGadget) {
+				library.addGadget(gadget);
+			} else {
+				library.updateGadget(gadget);
+			}
+			frame.dispose();
+		}	
 	}
 }

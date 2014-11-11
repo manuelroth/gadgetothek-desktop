@@ -26,13 +26,16 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.HashMap;
+import java.util.Map;
 
 public class GadgetMasterPanel extends JPanel {
 	private JTextField searchTextField;
     private JTable gadgetsTable = new JTable();
     private TableRowSorter<GadgetTableModel> sorter;
 	private GadgetTableModel gadgetTableModel;
-	GadgetDetailFrame gadgetDetailFrame = null;
+	private GadgetDetailFrame createGadgetDetailFrame = null;
+	private Map<Gadget, GadgetDetailFrame> editGadgetDetailFrames = new HashMap<Gadget, GadgetDetailFrame>();
 
 	/**
 	 * Create the frame.
@@ -104,12 +107,11 @@ public class GadgetMasterPanel extends JPanel {
 		buttonPanel.add(newGadgetButton);
 		newGadgetButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (gadgetDetailFrame == null)
-					gadgetDetailFrame = new GadgetDetailFrame(new Gadget(), library, true);
+				if (createGadgetDetailFrame == null)
+					createGadgetDetailFrame = new GadgetDetailFrame(new Gadget(), library, true);
 				else
 				{
-					gadgetDetailFrame = new GadgetDetailFrame(new Gadget(), library, true);
-					//gadgetDetailFrame.setFocus(true);
+					createGadgetDetailFrame.setFocus(true);
 				}
 			}
 		});
@@ -133,13 +135,10 @@ public class GadgetMasterPanel extends JPanel {
 					public void actionPerformed(ActionEvent e) {
 						int row = gadgetsTable.getSelectedRow();
 						Gadget gadget = (Gadget) gadgetTableModel.getGadget(row);
-						if (gadgetDetailFrame == null)
-							gadgetDetailFrame = new GadgetDetailFrame(gadget, library, false);
+						if (editGadgetDetailFrames.containsKey(gadget))
+							editGadgetDetailFrames.get(gadget).setFocus(true);
 						else
-						{
-							gadgetDetailFrame = new GadgetDetailFrame(gadget, library, false);
-							//gadgetDetailFrame.setFocus(true);
-						}
+							editGadgetDetailFrames.put(gadget, new GadgetDetailFrame(gadget, library, false));						
 					}
 				});
 	}
