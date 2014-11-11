@@ -96,7 +96,7 @@ public class UserMasterPanel extends JPanel {
 			
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
-				int customerIndex = e.getFirstIndex();
+				int customerIndex = customerTable.convertRowIndexToModel(customerTable.getSelectedRow());
 				Customer customer = library.getCustomers().get(customerIndex);
 				System.out.println("Selected customer " + customerIndex + ":" + customer.getName());
 				userDetailPanel.setCustomer(customer);

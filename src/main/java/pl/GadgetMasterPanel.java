@@ -17,13 +17,16 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableRowSorter;
 import javax.swing.JButton;
 
+import bl.Customer;
 import bl.Gadget;
 import bl.Library;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.HashMap;
@@ -56,22 +59,15 @@ public class GadgetMasterPanel extends JPanel {
 		gadgetsPanel.add(searchTextField);
 		searchTextField.setColumns(10);
 		
-		searchTextField.addFocusListener(new FocusListener()
+		searchTextField.addFocusListener(new FocusAdapter()
 		{
 			@Override
 			public void focusGained(FocusEvent e) {
 				searchTextField.setText("");
 			}
-
-			@Override
-			public void focusLost(FocusEvent e) {				
-			}			
+			
 		});
-		searchTextField.addKeyListener(new KeyListener() {
-			@Override
-			public void keyPressed(KeyEvent arg0) {
-			}
-
+		searchTextField.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent arg0) {
 				if (searchTextField.getText().length() != 0)
@@ -89,10 +85,6 @@ public class GadgetMasterPanel extends JPanel {
 				}
 				else
 					sorter.setRowFilter(null);
-			}
-
-			@Override
-			public void keyTyped(KeyEvent arg0) {
 			}
 		});
 		setLayout(new BorderLayout(0, 0));
@@ -133,7 +125,7 @@ public class GadgetMasterPanel extends JPanel {
 		
 				editGadgetButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						int row = gadgetsTable.getSelectedRow();
+						int row = gadgetsTable.convertRowIndexToModel(gadgetsTable.getSelectedRow());
 						Gadget gadget = (Gadget) gadgetTableModel.getGadget(row);
 						if (editGadgetDetailFrames.containsKey(gadget))
 							editGadgetDetailFrames.get(gadget).setFocus(true);
@@ -146,7 +138,6 @@ public class GadgetMasterPanel extends JPanel {
 	private void initTable(){
 		gadgetsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		gadgetsTable.setModel(gadgetTableModel);
-		
 		sorter = new TableRowSorter<GadgetTableModel>(gadgetTableModel);
 		gadgetsTable.setRowSorter(sorter);	
 	}

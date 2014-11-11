@@ -85,6 +85,7 @@ public class UserDetailPanel extends JPanel{
 		
 		borrowTableModel.setCustomer(customer);
 		reservationTableModel.setCustomer(customer);
+		repaint();
 	}
 
 	private void warnIfOverdueBorrowedGadgets(Library library) {
