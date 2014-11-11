@@ -32,6 +32,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.List;
 
 import javax.swing.Box;
 
@@ -58,15 +59,29 @@ public class UserDetailPanel extends JPanel{
 	private Library library;
     
 	public UserDetailPanel(Library library){
-		//Default customer
 		Customer defaultCustomer = library.getCustomers().get(0);
 		this.customer = defaultCustomer;
 		this.library = library;
 
 		initComponents(library);
-		initReservationTable(library, this.customer);
+		initReservationTable(library, defaultCustomer);
+		initBorrowTable(library, defaultCustomer);
 		setCustomer(defaultCustomer);
 		warnIfOverdueBorrowedGadgets(library);
+	}
+	
+	public Customer getCustomer() {
+		return customer;
+	}
+
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
+		
+		setBorder(BorderFactory.createTitledBorder(customer.getName()));
+		reservationLabel.setText("Reservationen ( " + library.getReservatonFor(customer, true).size() + " von 3)");
+
+		borrowTableModel.setCustomer(customer);
+		reservationTableModel.setCustomer(customer);
 	}
 
 	private void warnIfOverdueBorrowedGadgets(Library library) {
@@ -83,9 +98,6 @@ public class UserDetailPanel extends JPanel{
 	private void initComponents(Library library) {
 		setLayout(new GridLayout(0, 1, 0, 0));
 		
-		KeyListener borrowChecker =  new CheckBorrowKeyListener();
-		KeyListener reservationChecker =  new CheckReservationKeyListener();
-		
 		JPanel reservationTablePanel = new JPanel();
 		add(reservationTablePanel);
 		reservationTablePanel.setLayout(new BorderLayout(0, 0));
@@ -95,7 +107,6 @@ public class UserDetailPanel extends JPanel{
 		reservationLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		reservationTablePanel.add(reservationLabel, BorderLayout.NORTH);
 	
-		
 		JScrollPane reservationScrollPane = new JScrollPane();
 		reservationScrollPane.setViewportView(reservationTable);
 		reservationTablePanel.add(reservationScrollPane);
@@ -118,6 +129,7 @@ public class UserDetailPanel extends JPanel{
 		JLabel reservationIdLabel = new JLabel("Id");
 		textFieldPanel.add(reservationIdLabel, BorderLayout.WEST);
 		
+		KeyListener reservationChecker =  new CheckReservationKeyListener();
 		newReservationTextField = new ErrorUserTextField(new TextFieldGadgetIdValidator());
 		newReservationTextField.addKeyListener(reservationChecker);
 		textFieldPanel.add(newReservationTextField, BorderLayout.CENTER);
@@ -136,13 +148,7 @@ public class UserDetailPanel extends JPanel{
 		newReservationButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Gadget gadget = library.getGadget(newReservationTextField.getText());
-				if(gadget == null){
-					newBorrowButton.setToolTipText("Please check the gadgetId(consists of 19 numbers)");
-					reservationValidationLabel.setText("Gadget with id: "+newReservationTextField.getText()+" not available");
-				}else{
-					library.addReservation(gadget, customer);
-				}
+				reserveGadget();
 			}
 		});
 		
@@ -179,6 +185,7 @@ public class UserDetailPanel extends JPanel{
 		JLabel borrowIdLabel = new JLabel("Id");
 		textFieldPanel1.add(borrowIdLabel, BorderLayout.WEST);
 		
+		KeyListener borrowChecker =  new CheckBorrowKeyListener();
 		newBorrowTextField = new ErrorUserTextField(new TextFieldGadgetIdValidator());
 		newBorrowTextField.addKeyListener(borrowChecker);
 		textFieldPanel1.add(newBorrowTextField, BorderLayout.CENTER);
@@ -207,7 +214,42 @@ public class UserDetailPanel extends JPanel{
 		validationPanel1.add(borrowValidationLabel);
 	}
 	
-	void initReservationTable(Library library, Customer customer){
+	private void reserveGadget() {
+		Gadget gadget = library.getGadget(newReservationTextField.getText());
+		if (gadget == null) {
+			newBorrowButton.setToolTipText("Please check the gadgetId(consists of 19 numbers)");
+			reservationValidationLabel.setText("Gadget with id: " + newReservationTextField.getText() + " not available");
+		} else {
+			library.addReservation(gadget, customer);
+		}
+	}
+	
+	private void borrowGadget() {
+		Gadget gadget = library.getGadget(newBorrowTextField.getText());
+		
+		boolean hasOverdue = false;
+		List<Loan> loanedItems = library.getLoansFor(customer, true);
+		for (Loan loan : loanedItems) {
+			if (loan.isOverdue()) {
+				hasOverdue = true;
+			}
+		}
+		
+		if (gadget == null) {
+			newBorrowButton.setToolTipText("Please check the gadgetId(consists of 19 numbers)");
+			borrowValidationLabel.setText("Gadget with id: " + newBorrowTextField.getText() + " not available");
+		} else if (hasOverdue) {
+			borrowValidationLabel.setText("Please return overdue gadgets, before borrowing a new gadget");
+		} else if (loanedItems.size() >= 3) {
+			borrowValidationLabel.setText("You can not borrow more than three gadgets");
+		} else if (!library.getLoansFor(gadget, true).isEmpty()) {
+			borrowValidationLabel.setText("Is already lent to " + loanedItems.get(0).getCustomerId());
+		} else {
+			library.addLoan(gadget, customer);
+		}
+	}
+	
+	private void initReservationTable(Library library, Customer customer){
 		reservationTableModel = new ReservationTableModel(library, customer);
 		reservationTable = new JTable();
 		reservationTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -233,7 +275,7 @@ public class UserDetailPanel extends JPanel{
 		});
 	}
 	
-	void initBorrowTable(Library library, Customer customer){
+	private void initBorrowTable(Library library, Customer customer){
 		borrowTable = new JTable();
 		borrowTableModel = new BorrowTableModel(library, customer);
 		borrowSorter = new TableRowSorter<BorrowTableModel>(borrowTableModel);
@@ -257,46 +299,6 @@ public class UserDetailPanel extends JPanel{
 			}
 		});
 	}
-	
-	private void borrowGadget() {
-		Gadget gadget = library.getGadget(newBorrowTextField.getText());
-		
-		boolean hasOverdue = false;
-		for (Loan loan : library.getLoansFor(customer, true)) {
-			if(loan.isOverdue()){
-				hasOverdue = true;
-			}
-		}
-		if(gadget == null){
-			newBorrowButton.setToolTipText("Please check the gadgetId(consists of 19 numbers)");
-			borrowValidationLabel.setText("Gadget with id: "+newBorrowTextField.getText()+" not available");
-		}else if(hasOverdue){
-			borrowValidationLabel.setText("Please return overdue gadgets, before borrowing a new gadget");
-		}else if(library.getLoansFor(customer, true).size() >= 3){
-			borrowValidationLabel.setText("You can not borrow more than three gadgets");
-		}else if(!library.getLoansFor(gadget, true).isEmpty()){
-			borrowValidationLabel.setText("Is already lent to "+library.getCustomer(library.getLoansFor(gadget, true).get(0).getCustomerId()));
-		}else{
-			library.addLoan(gadget, customer);
-		}
-	}
-	
-	public Customer getCustomer() {
-		return customer;
-	}
-
-	public void setCustomer(Customer customer) {
-		this.customer = customer;
-		
-		TitledBorder title = BorderFactory.createTitledBorder(customer.getName());
-		setBorder(title);
-
-		reservationLabel.setText("Reservationen ( "+library.getReservatonFor(customer, true).size()+" von 3)");
-		
-		borrowTableModel.setCustomer(customer);
-		reservationTableModel.setCustomer(customer);
-		//this.repaint();
-	}
 
 	private static class JTableButtonRenderer implements TableCellRenderer {        
         @Override public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
@@ -305,29 +307,31 @@ public class UserDetailPanel extends JPanel{
         }
     }
 	
-	public class CheckBorrowKeyListener extends KeyAdapter {
+	private class CheckBorrowKeyListener extends KeyAdapter {
 		@Override
 		public void keyReleased(KeyEvent arg0) {
-			if(newBorrowTextField.isValid()){
+			if (newBorrowTextField.isValid()) {
 				newBorrowButton.setToolTipText("Ausleihen");
 				newBorrowButton.setEnabled(true);
-			}else{
-				newBorrowButton.setToolTipText("Please check the gadgetId(consists of 19 numbers)");
+			} else {
+				newBorrowButton
+						.setToolTipText("Please check the gadgetId(consists of 19 numbers)");
 				newBorrowButton.setEnabled(false);
 			}
-		}	
+		}
 	}
 	
-	public class CheckReservationKeyListener extends KeyAdapter {
+	private class CheckReservationKeyListener extends KeyAdapter {
 		@Override
 		public void keyReleased(KeyEvent arg0) {
-			if(newReservationTextField.isValid()){
+			if (newReservationTextField.isValid()) {
 				newReservationButton.setToolTipText("Reservation");
 				newReservationButton.setEnabled(true);
-			}else{
-				newReservationButton.setToolTipText("Please check the gadgetId(consists of 19 numbers)");
+			} else {
+				newReservationButton
+						.setToolTipText("Please check the gadgetId(consists of 19 numbers)");
 				newReservationButton.setEnabled(false);
 			}
-		}	
+		}
 	}
 }
