@@ -53,28 +53,33 @@ public class UserDetailPanel extends JPanel{
     private JButton newReservationButton;
     private JLabel borrowValidationLabel;
     private JLabel reservationValidationLabel;
-    private Customer customer;
-	
-	public UserDetailPanel(Library library, Customer  customer){	
-		this.setCustomer(customer);
+	private JLabel reservationLabel;
+	private Customer customer;
+	private Library library;
+    
+	public UserDetailPanel(Library library){
 		KeyListener borrowChecker =  new CheckBorrowKeyListener();
 		KeyListener reservationChecker =  new CheckReservationKeyListener();
+		//Default customer
+		Customer defaultCustomer = library.getCustomers().get(0);
+		this.customer = defaultCustomer;
+		
+		
+		this.library = library;
 
-		TitledBorder title = BorderFactory.createTitledBorder(customer.getName());
-		setBorder(title);
 		setLayout(new GridLayout(0, 1, 0, 0));
 		
 		JPanel reservationTablePanel = new JPanel();
 		add(reservationTablePanel);
 		reservationTablePanel.setLayout(new BorderLayout(0, 0));
 		
-		JLabel reservationLabel = new JLabel();
-		reservationLabel.setText("Reservationen ( "+library.getReservatonFor(customer, true).size()+" von 3)");
+		reservationLabel = new JLabel();
 		reservationLabel.setVerticalAlignment(SwingConstants.TOP);
 		reservationLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		reservationTablePanel.add(reservationLabel, BorderLayout.NORTH);
+	
 		
-		initReservationTable(library);
+		initReservationTable(library, this.customer);
 		
 		JScrollPane reservationScrollPane = new JScrollPane();
 		reservationScrollPane.setViewportView(reservationTable);
@@ -131,8 +136,10 @@ public class UserDetailPanel extends JPanel{
 		
 		JPanel borrowTablePanel = new JPanel();
 		add(borrowTablePanel);
-		initBorrowTable(library);
+		initBorrowTable(library, this.customer);
 		borrowTablePanel.setLayout(new BorderLayout(0, 0));
+		
+		setCustomer(defaultCustomer);
 		
 		JLabel borrowLabel = new JLabel("Ausleihen ( "+library.getLoansFor(customer, true).size()+" von 3)");
 		borrowTablePanel.add(borrowLabel, BorderLayout.NORTH);
@@ -215,8 +222,8 @@ public class UserDetailPanel extends JPanel{
 		}
 	}
 	
-	void initReservationTable(Library library){
-		reservationTableModel = new ReservationTableModel(library, this.customer);
+	void initReservationTable(Library library, Customer customer){
+		reservationTableModel = new ReservationTableModel(library, customer);
 		reservationTable = new JTable();
 		reservationTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		reservationTable.setModel(reservationTableModel);
@@ -241,9 +248,9 @@ public class UserDetailPanel extends JPanel{
 		});
 	}
 	
-	void initBorrowTable(Library library){
+	void initBorrowTable(Library library, Customer customer){
 		borrowTable = new JTable();
-		borrowTableModel = new BorrowTableModel(library, this.customer);
+		borrowTableModel = new BorrowTableModel(library, customer);
 		borrowSorter = new TableRowSorter<BorrowTableModel>(borrowTableModel);
 		borrowTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		borrowTable.setModel(borrowTableModel);
@@ -272,7 +279,15 @@ public class UserDetailPanel extends JPanel{
 
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
-		this.repaint();
+		
+		TitledBorder title = BorderFactory.createTitledBorder(customer.getName());
+		setBorder(title);
+
+		reservationLabel.setText("Reservationen ( "+library.getReservatonFor(customer, true).size()+" von 3)");
+		
+		borrowTableModel.setCustomer(customer);
+		reservationTableModel.setCustomer(customer);
+		//this.repaint();
 	}
 
 	private static class JTableButtonRenderer implements TableCellRenderer {        

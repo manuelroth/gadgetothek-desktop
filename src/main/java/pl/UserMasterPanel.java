@@ -26,12 +26,12 @@ public class UserMasterPanel extends JPanel {
     private TableRowSorter<CustomerTableModel> sorter;
     private JTextField searchTextField;
     private JTable customerTable = new JTable();
-	private BorrowMasterPanel masterPanel;
+	private UserDetailPanel userDetailPanel;
 	private Library library;
 
-	public UserMasterPanel(Library library, BorrowMasterPanel masterPanel) {
+	public UserMasterPanel(Library library, JPanel userDetailPanel) {
 		this.library = library;
-		this.masterPanel = masterPanel;
+		this.userDetailPanel = (UserDetailPanel)userDetailPanel;
 		
 		customerTableModel = new CustomerTableModel(library);
 		setBounds(100, 100, 450, 300);
@@ -99,10 +99,8 @@ public class UserMasterPanel extends JPanel {
 			@Override
 			public void focusGained(FocusEvent arg0) {
 				JTable table = (JTable)arg0.getComponent();
-				Customer customer = library.getCustomers().get(table.getSelectedRow());		
-				
-				
-				masterPanel.setCurrentUserPanel(new UserDetailPanel(library, customer));
+				Customer customer = library.getCustomers().get(table.getSelectedRow());
+				userDetailPanel.setCustomer(customer);		
 			}
 		});
 		

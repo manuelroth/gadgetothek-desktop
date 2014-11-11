@@ -28,8 +28,8 @@ public class BorrowTableModel extends AbstractTableModel implements Observer{
 	
 	public BorrowTableModel(Library library, Customer customer){
 		this.library=library;
+		this.customer=customer;
 		library.addObserver(this);
-		this.customer = customer;
 	}
 	
 	public void propagateUpdate(int pos) {
@@ -105,5 +105,10 @@ public class BorrowTableModel extends AbstractTableModel implements Observer{
 		default:
 			return "Error";
 		}
+	}
+	
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
+		fireTableDataChanged();
 	}
 }

@@ -26,8 +26,8 @@ public class ReservationTableModel extends AbstractTableModel implements Observe
 	
 	public ReservationTableModel(Library library, Customer customer){
 		this.library=library;
+		this.customer=customer;
 		library.addObserver(this);
-		this.customer = customer;
 	}
 	
 	public void propagateUpdate(int pos) {
@@ -100,5 +100,10 @@ public class ReservationTableModel extends AbstractTableModel implements Observe
 		default:
 			return "Error";
 		}
+	}
+	
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
+		fireTableDataChanged();
 	}
 }
