@@ -58,16 +58,33 @@ public class UserDetailPanel extends JPanel{
 	private Library library;
     
 	public UserDetailPanel(Library library){
-		KeyListener borrowChecker =  new CheckBorrowKeyListener();
-		KeyListener reservationChecker =  new CheckReservationKeyListener();
 		//Default customer
 		Customer defaultCustomer = library.getCustomers().get(0);
 		this.customer = defaultCustomer;
-		
-		
 		this.library = library;
 
+		initComponents(library);
+		initReservationTable(library, this.customer);
+		setCustomer(defaultCustomer);
+		warnIfOverdueBorrowedGadgets(library);
+	}
+
+	private void warnIfOverdueBorrowedGadgets(Library library) {
+		for(Loan loan :library.getLoansFor(customer, true)){
+			if(loan.isOverdue()){
+				reservationValidationLabel.setText("Keine Reservation moeglich: Ueberfaellige vorhanden");
+				newReservationButton.setEnabled(false);
+				borrowValidationLabel.setText("Keine Ausleihe moeglich: Ueberfaellige vorhanden");
+				newBorrowButton.setEnabled(false);
+			}
+		}
+	}
+
+	private void initComponents(Library library) {
 		setLayout(new GridLayout(0, 1, 0, 0));
+		
+		KeyListener borrowChecker =  new CheckBorrowKeyListener();
+		KeyListener reservationChecker =  new CheckReservationKeyListener();
 		
 		JPanel reservationTablePanel = new JPanel();
 		add(reservationTablePanel);
@@ -78,8 +95,6 @@ public class UserDetailPanel extends JPanel{
 		reservationLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		reservationTablePanel.add(reservationLabel, BorderLayout.NORTH);
 	
-		
-		initReservationTable(library, this.customer);
 		
 		JScrollPane reservationScrollPane = new JScrollPane();
 		reservationScrollPane.setViewportView(reservationTable);
@@ -139,8 +154,6 @@ public class UserDetailPanel extends JPanel{
 		initBorrowTable(library, this.customer);
 		borrowTablePanel.setLayout(new BorderLayout(0, 0));
 		
-		setCustomer(defaultCustomer);
-		
 		JLabel borrowLabel = new JLabel("Ausleihen ( "+library.getLoansFor(customer, true).size()+" von 3)");
 		borrowTablePanel.add(borrowLabel, BorderLayout.NORTH);
 		
@@ -174,6 +187,15 @@ public class UserDetailPanel extends JPanel{
 		newBorrowButton = new JButton("Ausleihen");
 		newBorrowButton.setEnabled(false);
 		textFieldPanel1.add(newBorrowButton, BorderLayout.EAST);
+		newBorrowButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				borrowGadget();
+			}
+
+			
+		});
+		
 		
 		JPanel validationPanel1 = new JPanel();
 		newBorrowPanel.add(validationPanel1);
@@ -183,43 +205,6 @@ public class UserDetailPanel extends JPanel{
 		borrowValidationLabel.setVerticalAlignment(SwingConstants.TOP);
 		borrowValidationLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		validationPanel1.add(borrowValidationLabel);
-		
-		Component horizontalStrut_1 = Box.createHorizontalStrut(20);
-		validationPanel1.add(horizontalStrut_1, BorderLayout.WEST);
-		newBorrowButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				Gadget gadget = library.getGadget(newBorrowTextField.getText());
-				
-				boolean hasOverdue = false;
-				for (Loan loan : library.getLoansFor(customer, true)) {
-					if(loan.isOverdue()){
-						hasOverdue = true;
-					}
-				}
-				if(gadget == null){
-					newBorrowButton.setToolTipText("Please check the gadgetId(consists of 19 numbers)");
-					borrowValidationLabel.setText("Gadget with id: "+newBorrowTextField.getText()+" not available");
-				}else if(hasOverdue){
-					borrowValidationLabel.setText("Please return overdue gadgets, before borrowing a new gadget");
-				}else if(library.getLoansFor(customer, true).size() >= 3){
-					borrowValidationLabel.setText("You can not borrow more than three gadgets");
-				}else if(!library.getLoansFor(gadget, true).isEmpty()){
-					borrowValidationLabel.setText("Is already lent to "+library.getCustomer(library.getLoansFor(gadget, true).get(0).getCustomerId()));
-				}else{
-					library.addLoan(gadget, customer);
-				}
-			}
-		});
-		
-		for(Loan loan :library.getLoansFor(customer, true)){
-			if(loan.isOverdue()){
-				reservationValidationLabel.setText("Keine Reservation moeglich: Ueberfaellige vorhanden");
-				newReservationButton.setEnabled(false);
-				borrowValidationLabel.setText("Keine Ausleihe moeglich: Ueberfaellige vorhanden");
-				newBorrowButton.setEnabled(false);
-			}
-		}
 	}
 	
 	void initReservationTable(Library library, Customer customer){
@@ -271,6 +256,29 @@ public class UserDetailPanel extends JPanel{
 	            }
 			}
 		});
+	}
+	
+	private void borrowGadget() {
+		Gadget gadget = library.getGadget(newBorrowTextField.getText());
+		
+		boolean hasOverdue = false;
+		for (Loan loan : library.getLoansFor(customer, true)) {
+			if(loan.isOverdue()){
+				hasOverdue = true;
+			}
+		}
+		if(gadget == null){
+			newBorrowButton.setToolTipText("Please check the gadgetId(consists of 19 numbers)");
+			borrowValidationLabel.setText("Gadget with id: "+newBorrowTextField.getText()+" not available");
+		}else if(hasOverdue){
+			borrowValidationLabel.setText("Please return overdue gadgets, before borrowing a new gadget");
+		}else if(library.getLoansFor(customer, true).size() >= 3){
+			borrowValidationLabel.setText("You can not borrow more than three gadgets");
+		}else if(!library.getLoansFor(gadget, true).isEmpty()){
+			borrowValidationLabel.setText("Is already lent to "+library.getCustomer(library.getLoansFor(gadget, true).get(0).getCustomerId()));
+		}else{
+			library.addLoan(gadget, customer);
+		}
 	}
 	
 	public Customer getCustomer() {
