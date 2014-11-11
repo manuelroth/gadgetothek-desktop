@@ -100,7 +100,7 @@ public class UserMasterPanel extends JPanel {
 			public void focusGained(FocusEvent arg0) {
 				JTable table = (JTable)arg0.getComponent();
 				Customer customer = library.getCustomers().get(table.getSelectedRow());
-				userDetailPanel.setCustomer(customer);		
+				userDetailPanel.setCustomer(customer);	
 			}
 		});
 		

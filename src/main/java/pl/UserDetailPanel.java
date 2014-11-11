@@ -57,6 +57,7 @@ public class UserDetailPanel extends JPanel{
 	private JLabel reservationLabel;
 	private Customer customer;
 	private Library library;
+	private JLabel borrowLabel;
     
 	public UserDetailPanel(Library library){
 		Customer defaultCustomer = library.getCustomers().get(0);
@@ -78,8 +79,10 @@ public class UserDetailPanel extends JPanel{
 		this.customer = customer;
 		
 		setBorder(BorderFactory.createTitledBorder(customer.getName()));
+		
 		reservationLabel.setText("Reservationen ( " + library.getReservatonFor(customer, true).size() + " von 3)");
-
+		borrowLabel.setText("Ausleihen ( " + library.getLoansFor(customer, true).size() + " von 3)");
+		
 		borrowTableModel.setCustomer(customer);
 		reservationTableModel.setCustomer(customer);
 	}
@@ -160,7 +163,7 @@ public class UserDetailPanel extends JPanel{
 		initBorrowTable(library, this.customer);
 		borrowTablePanel.setLayout(new BorderLayout(0, 0));
 		
-		JLabel borrowLabel = new JLabel("Ausleihen ( "+library.getLoansFor(customer, true).size()+" von 3)");
+		borrowLabel = new JLabel();
 		borrowTablePanel.add(borrowLabel, BorderLayout.NORTH);
 		
 		JScrollPane borrowScrollPane = new JScrollPane();
@@ -202,7 +205,6 @@ public class UserDetailPanel extends JPanel{
 
 			
 		});
-		
 		
 		JPanel validationPanel1 = new JPanel();
 		newBorrowPanel.add(validationPanel1);
