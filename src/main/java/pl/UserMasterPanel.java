@@ -16,6 +16,8 @@ import javax.swing.ListSelectionModel;
 import javax.swing.RowFilter;
 import javax.swing.RowFilter.ComparisonType;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableRowSorter;
 
 import bl.Customer;
@@ -90,17 +92,15 @@ public class UserMasterPanel extends JPanel {
 		customerTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		customerTable.setModel(customerTableModel);
 		
-		customerTable.addFocusListener(new FocusListener() {
-			@Override
-			public void focusLost(FocusEvent arg0) {
-				
-			}
+		customerTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
 			
 			@Override
-			public void focusGained(FocusEvent arg0) {
-				JTable table = (JTable)arg0.getComponent();
-				Customer customer = library.getCustomers().get(table.getSelectedRow());
-				userDetailPanel.setCustomer(customer);	
+			public void valueChanged(ListSelectionEvent e) {
+				int customerIndex = e.getFirstIndex();
+				Customer customer = library.getCustomers().get(customerIndex);
+				System.out.println("Selected customer " + customerIndex + ":" + customer.getName());
+				userDetailPanel.setCustomer(customer);
+				
 			}
 		});
 		

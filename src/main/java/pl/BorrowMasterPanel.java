@@ -15,12 +15,12 @@ public class BorrowMasterPanel extends JPanel {
 		setBounds(100, 100, 450, 300);
 		setBorder(new EmptyBorder(5, 5, 5, 5));
 		setLayout(new GridLayout(1, 0, 0, 0));	
-		
-		JPanel userDetailPanel = new UserDetailPanel(library);
-		add(userDetailPanel);
 
+		JPanel userDetailPanel = new UserDetailPanel(library);
 		JPanel userMasterPanel = new UserMasterPanel(library, userDetailPanel);
+
 		add(userMasterPanel);	
+		add(userDetailPanel);
 		
 		
 		/*Customer initialCustomer = library.getCustomers().get(0);
