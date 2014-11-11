@@ -19,10 +19,12 @@ public class CustomerTableModel extends AbstractTableModel implements Observer{
 	private static final long serialVersionUID = 1L;
 	private String[] columnNames = {"KundenId", "Name", "Reservationen", "Ausleihen", "Ueberfaellige"};
 	private Library library;
+	private List<Customer> customers;
 
 	
 	public CustomerTableModel(Library library){
 		this.library=library;
+		this.customers = library.getCustomers();
 		library.addObserver(this);
 	}
 	
@@ -38,14 +40,14 @@ public class CustomerTableModel extends AbstractTableModel implements Observer{
 	public void update(Observable obj, Object arg1) {
 		MessageData data = (MessageData) arg1;
 		if (data.getData() instanceof Customer){
-			int pos = library.getCustomers().indexOf((Customer)data.getData());
+			int pos = customers.indexOf((Customer)data.getData());
 			fireTableRowsUpdated(pos, pos);			
 		}
 	}
 
 	@Override
 	public int getRowCount() {
-		return library.getCustomers().size();
+		return customers.size();
 	}
 
 	@Override
@@ -55,7 +57,7 @@ public class CustomerTableModel extends AbstractTableModel implements Observer{
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		Customer customer = library.getCustomers().get(rowIndex);
+		Customer customer = customers.get(rowIndex);
 		switch(columnIndex){
 		case 0:
 			return customer.getStudentNumber();

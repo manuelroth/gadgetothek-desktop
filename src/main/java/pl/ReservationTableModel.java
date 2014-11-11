@@ -2,6 +2,7 @@ package pl;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -22,11 +23,13 @@ public class ReservationTableModel extends AbstractTableModel implements Observe
 	private Class<?>[] columnTypes = new Class<?>[] {String.class, Integer.class, JButton.class, JButton.class};
 	private Library library;
 	private Customer customer;
+	private List<Reservation> reservations;
 
 	
 	public ReservationTableModel(Library library, Customer customer){
 		this.library=library;
 		this.customer=customer;
+		this.reservations = library.getReservatonFor(customer, true);
 		library.addObserver(this);
 	}
 	
@@ -47,7 +50,7 @@ public class ReservationTableModel extends AbstractTableModel implements Observe
 		MessageData data = (MessageData) arg1;
 		if(!data.getTarget().equals("reservation")) return;
 		
-		int pos = library.getReservatonFor(customer, true).indexOf((Reservation)data.getData());
+		int pos = reservations.indexOf((Reservation)data.getData());
 		if(data.getType().equals("add")) {
 			fireTableRowsInserted(pos, pos);
 		} else if(data.getType().equals("update")) {
@@ -57,7 +60,7 @@ public class ReservationTableModel extends AbstractTableModel implements Observe
 
 	@Override
 	public int getRowCount() {
-		return library.getReservatonFor(customer, true).size();
+		return reservations.size();
 	}
 
 	@Override
@@ -67,16 +70,16 @@ public class ReservationTableModel extends AbstractTableModel implements Observe
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		Reservation reservation = library.getReservatonFor(customer, true).get(rowIndex);
+		Reservation reservation = reservations.get(rowIndex);
 		Gadget gadget = library.getGadget(reservation.getGadgetId());
 		switch(columnIndex){
 		case 0:
 			return gadget.getName();
 		case 1:
-			return library.getReservatonFor(gadget, true).size();
+			return reservations.size();
 		case 2:
 			final JButton ausleihenButton = new JButton("Ja");
-			if((library.getReservatonFor(gadget, true).size()) > 0){
+			if((reservations.size()) > 0){
 				ausleihenButton.setEnabled(false);
 				ausleihenButton.setText("Nein");
 			}
@@ -104,6 +107,7 @@ public class ReservationTableModel extends AbstractTableModel implements Observe
 	
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
+		this.reservations = library.getReservatonFor(customer, true);
 		fireTableDataChanged();
 	}
 }

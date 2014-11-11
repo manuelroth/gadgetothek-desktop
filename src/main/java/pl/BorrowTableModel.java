@@ -3,6 +3,7 @@ package pl;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Date;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -25,15 +26,14 @@ public class BorrowTableModel extends AbstractTableModel implements Observer{
 	private Class<?>[] columnTypes = new Class<?>[] {String.class, String.class, String.class, Boolean.class, Boolean.class, JButton.class};
 	private Library library;
 	private Customer customer;
+	private Gadget gadget;
+	private List<Loan> loans;
 	
 	public BorrowTableModel(Library library, Customer customer){
 		this.library=library;
 		this.customer=customer;
+		this.loans = library.getLoansFor(customer, true);
 		library.addObserver(this);
-	}
-	
-	public void propagateUpdate(int pos) {
-		fireTableDataChanged();
 	}
 	
 	public String getColumnName(int col) {
@@ -49,7 +49,7 @@ public class BorrowTableModel extends AbstractTableModel implements Observer{
 		MessageData data = (MessageData) arg1;
 		if(!data.getTarget().equals("loan")) return;
 		
-		int pos = library.getLoansFor(customer, true).indexOf((Loan)data.getData());
+		int pos = loans.indexOf((Loan)data.getData());
 		if(data.getType().equals("add")) {
 			fireTableRowsInserted(pos, pos);
 		} else if(data.getType().equals("update")) {
@@ -59,7 +59,7 @@ public class BorrowTableModel extends AbstractTableModel implements Observer{
 
 	@Override
 	public int getRowCount() {
-		return library.getLoansFor(customer, true).size();
+		return loans.size();
 	}
 
 	@Override
@@ -69,8 +69,8 @@ public class BorrowTableModel extends AbstractTableModel implements Observer{
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		Loan loan = library.getLoansFor(customer, true).get(rowIndex);
-		Gadget gadget = library.getGadget(loan.getGadgetId());
+		Loan loan = loans.get(rowIndex);
+		gadget = library.getGadget(loan.getGadgetId());
 		
 		switch(columnIndex){
 		case 0:
@@ -98,7 +98,7 @@ public class BorrowTableModel extends AbstractTableModel implements Observer{
 						JOptionPane.showMessageDialog(null, "Gadget is reserved by "+library.getCustomer(library.getReservatonFor(gadget, true).get(0).getCustomerId()));
 					}
 					loan.returnCopy();
-					propagateUpdate(rowIndex);
+					fireTableDataChanged();
 				}
 			});
 			return returnButton;
@@ -109,6 +109,8 @@ public class BorrowTableModel extends AbstractTableModel implements Observer{
 	
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
+		this.loans = library.getLoansFor(customer, true);
 		fireTableDataChanged();
 	}
+	
 }
