@@ -58,6 +58,8 @@ public class UserDetailPanel extends JPanel{
 	private Customer customer;
 	private Library library;
 	private JLabel borrowLabel;
+	private JPanel reservationTablePanel;
+	private JPanel borrowTablePanel;
     
 	public UserDetailPanel(Library library){
 		Customer defaultCustomer = library.getCustomers().get(0);
@@ -84,8 +86,11 @@ public class UserDetailPanel extends JPanel{
 		borrowLabel.setText("Ausleihen ( " + library.getLoansFor(customer, true).size() + " von 3)");
 		
 		borrowTableModel.setCustomer(customer);
+		
+
 		reservationTableModel.setCustomer(customer);
-		repaint();
+		
+		invalidate();
 	}
 
 	private void warnIfOverdueBorrowedGadgets(Library library) {
@@ -102,7 +107,7 @@ public class UserDetailPanel extends JPanel{
 	private void initComponents(Library library) {
 		setLayout(new GridLayout(0, 1, 0, 0));
 		
-		JPanel reservationTablePanel = new JPanel();
+		reservationTablePanel = new JPanel();
 		add(reservationTablePanel);
 		reservationTablePanel.setLayout(new BorderLayout(0, 0));
 		
@@ -111,10 +116,6 @@ public class UserDetailPanel extends JPanel{
 		reservationLabel.setHorizontalAlignment(SwingConstants.LEFT);
 		reservationTablePanel.add(reservationLabel, BorderLayout.NORTH);
 	
-		JScrollPane reservationScrollPane = new JScrollPane();
-		reservationScrollPane.setViewportView(reservationTable);
-		reservationTablePanel.add(reservationScrollPane);
-		
 		JPanel newReservationPanel = new JPanel();
 		add(newReservationPanel);
 		newReservationPanel.setLayout(new GridLayout(0, 1, 0, 0));
@@ -159,17 +160,13 @@ public class UserDetailPanel extends JPanel{
 		Component horizontalStrut = Box.createHorizontalStrut(20);
 		validationPanel.add(horizontalStrut, BorderLayout.WEST);
 		
-		JPanel borrowTablePanel = new JPanel();
+		borrowTablePanel = new JPanel();
 		add(borrowTablePanel);
 		initBorrowTable(library, this.customer);
 		borrowTablePanel.setLayout(new BorderLayout(0, 0));
 		
 		borrowLabel = new JLabel();
 		borrowTablePanel.add(borrowLabel, BorderLayout.NORTH);
-		
-		JScrollPane borrowScrollPane = new JScrollPane();
-		borrowScrollPane.setViewportView(borrowTable);
-		borrowTablePanel.add(borrowScrollPane);
 		
 		JPanel newBorrowPanel = new JPanel();
 		add(newBorrowPanel);
@@ -276,6 +273,9 @@ public class UserDetailPanel extends JPanel{
 	            }
 			}
 		});
+		
+		JScrollPane reservationScrollPane = new JScrollPane(reservationTable);
+		reservationTablePanel.add(reservationScrollPane);
 	}
 	
 	private void initBorrowTable(Library library, Customer customer){
@@ -301,6 +301,9 @@ public class UserDetailPanel extends JPanel{
 	            }
 			}
 		});
+		
+		JScrollPane borrowScrollPane = new JScrollPane(borrowTable);
+		borrowTablePanel.add(borrowScrollPane);
 	}
 
 	private static class JTableButtonRenderer implements TableCellRenderer {        

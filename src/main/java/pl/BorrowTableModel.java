@@ -2,6 +2,7 @@ package pl;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Observable;
@@ -31,8 +32,8 @@ public class BorrowTableModel extends AbstractTableModel implements Observer{
 	
 	public BorrowTableModel(Library library, Customer customer){
 		this.library=library;
-		this.customer=customer;
-		this.loans = library.getLoansFor(customer, true);
+		this.customer = null;
+		this.loans = new ArrayList<Loan>();
 		library.addObserver(this);
 	}
 	
@@ -72,6 +73,9 @@ public class BorrowTableModel extends AbstractTableModel implements Observer{
 		Loan loan = loans.get(rowIndex);
 		gadget = library.getGadget(loan.getGadgetId());
 		
+
+		System.out.println("getValueAt on BorrowTableModel = " + this.customer.getName());
+		
 		switch(columnIndex){
 		case 0:
 			return gadget.getName();
@@ -108,8 +112,9 @@ public class BorrowTableModel extends AbstractTableModel implements Observer{
 	}
 	
 	public void setCustomer(Customer customer) {
+		System.out.println("setCustomer on BorrowTableModel = " + customer.getName());
 		this.customer = customer;
-		this.loans = library.getLoansFor(customer, true);
+		this.loans = library.getLoansFor(this.customer, true);
 		fireTableDataChanged();
 	}
 	

@@ -109,5 +109,8 @@ public class ReservationTableModel extends AbstractTableModel implements Observe
 		this.customer = customer;
 		this.reservations = library.getReservatonFor(customer, true);
 		fireTableDataChanged();
+		if(reservations.size() > 0) {
+			fireTableRowsUpdated(0, reservations.size()-1);
+		}
 	}
 }
