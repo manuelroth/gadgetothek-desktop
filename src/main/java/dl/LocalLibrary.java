@@ -61,7 +61,7 @@ public class LocalLibrary  implements LibraryData {
 
 	@Override
 	public void addLoan(Loan loan) {
-		loanListener.forEach( x -> x.changed(new MessageData("loan", "update", loan )));
+		loanListener.forEach( x -> x.changed(new MessageData("loan", "add", loan )));
 		loans.add(loan);		
 	}	
 

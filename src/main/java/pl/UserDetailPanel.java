@@ -225,6 +225,7 @@ public class UserDetailPanel extends JPanel{
 	}
 	
 	private void borrowGadget() {
+		borrowValidationLabel.setText("");
 		Gadget gadget = library.getGadget(newBorrowTextField.getText());
 		
 		boolean hasOverdue = false;
@@ -243,7 +244,8 @@ public class UserDetailPanel extends JPanel{
 		} else if (loanedItems.size() >= 3) {
 			borrowValidationLabel.setText("You can not borrow more than three gadgets");
 		} else if (!library.getLoansFor(gadget, true).isEmpty()) {
-			borrowValidationLabel.setText("Is already lent to " + loanedItems.get(0).getCustomerId());
+			String customerId = loanedItems.get(0).getCustomerId();
+			borrowValidationLabel.setText("Is already lent to " + library.getCustomer(customerId).getName());
 		} else {
 			library.addLoan(gadget, customer);
 		}
