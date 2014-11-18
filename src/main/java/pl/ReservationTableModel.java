@@ -79,7 +79,8 @@ public class ReservationTableModel extends AbstractTableModel implements Observe
 			return reservations.size();
 		case 2:
 			final JButton ausleihenButton = new JButton("Ja");
-			if((reservations.size()) > 0){
+			
+			if(library.getLoansFor(gadget, true).size() > 0){
 				ausleihenButton.setEnabled(false);
 				ausleihenButton.setText("Nein");
 			}

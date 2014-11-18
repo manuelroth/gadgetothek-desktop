@@ -48,6 +48,10 @@ public class BorrowTableModel extends AbstractTableModel implements Observer{
 	@Override
 	public void update(Observable obj, Object arg1) {
 		MessageData data = (MessageData) arg1;
+		if(data.getTarget().equals("reservation")) {
+			setCustomer(library.getCustomer(((Reservation)data.getData()).getCustomerId()));
+		}
+		
 		if(!data.getTarget().equals("loan")) return;
 		
 		int pos = loans.indexOf((Loan)data.getData());
@@ -96,6 +100,7 @@ public class BorrowTableModel extends AbstractTableModel implements Observer{
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					if(!library.getReservatonFor(gadget, true).isEmpty()){
+						
 						JOptionPane.showMessageDialog(null, "Gadget is reserved by "+library.getCustomer(library.getReservatonFor(gadget, true).get(0).getCustomerId()));
 					}
 					loan.returnCopy();
