@@ -13,7 +13,6 @@ import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
-import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
@@ -41,9 +40,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.WindowEvent;
 
 public class GadgetDetailFrame {
 
@@ -223,7 +219,6 @@ public class GadgetDetailFrame {
 		frame.getRootPane().setDefaultButton(saveButton);	
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
-		int mapName = JComponent.WHEN_IN_FOCUSED_WINDOW; 
 		InputMap imap = frame.getRootPane().getInputMap();
 		imap.put(KeyStroke.getKeyStroke("ESCAPE"), "ESCAPE released");
 		//imap.put(KeyStroke.getKeyStroke("ENTER"), "ENTER released");

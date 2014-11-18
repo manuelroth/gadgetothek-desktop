@@ -5,11 +5,9 @@ import javax.swing.border.EmptyBorder;
 
 import java.awt.GridLayout;
 
-import bl.Customer;
 import bl.Library;
 
 public class BorrowMasterPanel extends JPanel {
-	private UserDetailPanel currentUserPanel;
 	
 	public BorrowMasterPanel(Library library) {
 		setBounds(100, 100, 450, 300);
@@ -21,22 +19,5 @@ public class BorrowMasterPanel extends JPanel {
 
 		add(userMasterPanel);	
 		add(userDetailPanel);
-		
-		
-		/*Customer initialCustomer = library.getCustomers().get(0);
-		currentUserPanel = new UserDetailPanel(library, initialCustomer);
-		add(currentUserPanel);*/
 	}
-	
-	/*public void setCurrentUserPanel(UserDetailPanel panel) {
-		this.remove(currentUserPanel);
-		this.repaint();
-		this.add(panel);
-		this.currentUserPanel = panel;
-		this.repaint();
-	}
-	
-	public UserDetailPanel getCurrentUserDetailPanel() {
-		return this.currentUserPanel;
-	}*/
 }

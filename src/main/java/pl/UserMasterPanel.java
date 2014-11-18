@@ -1,6 +1,5 @@
 package pl;
 
-import java.awt.Component;
 import java.awt.GridLayout;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -14,7 +13,6 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.RowFilter;
-import javax.swing.RowFilter.ComparisonType;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -98,7 +96,6 @@ public class UserMasterPanel extends JPanel {
 			public void valueChanged(ListSelectionEvent e) {
 				int customerIndex = customerTable.convertRowIndexToModel(customerTable.getSelectedRow());
 				Customer customer = library.getCustomers().get(customerIndex);
-				System.out.println("Selected customer " + customerIndex + ":" + customer.getName());
 				userDetailPanel.setCustomer(customer);
 				
 			}

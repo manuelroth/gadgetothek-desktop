@@ -7,8 +7,8 @@ import bl.Customer;
 import bl.Gadget;
 import bl.Library;
 import bl.Loan;
+import bl.Reservation;
 
-import javax.swing.border.TitledBorder;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 import javax.swing.BoxLayout;
@@ -84,10 +84,10 @@ public class UserDetailPanel extends JPanel{
 		
 		reservationLabel.setText("Reservationen ( " + library.getReservatonFor(customer, true).size() + " von 3)");
 		borrowLabel.setText("Ausleihen ( " + library.getLoansFor(customer, true).size() + " von 3)");
+		borrowValidationLabel.setText("");
+		reservationValidationLabel.setText("");
 		
 		borrowTableModel.setCustomer(customer);
-		
-
 		reservationTableModel.setCustomer(customer);
 		
 		invalidate();
@@ -215,11 +215,14 @@ public class UserDetailPanel extends JPanel{
 	}
 	
 	private void reserveGadget() {
+		List<Reservation> reservedItems = library.getReservatonFor(customer, true);
 		Gadget gadget = library.getGadget(newReservationTextField.getText());
 		if (gadget == null) {
 			newBorrowButton.setToolTipText("Please check the gadgetId(consists of 19 numbers)");
 			reservationValidationLabel.setText("Gadget with id: " + newReservationTextField.getText() + " not available");
-		} else {
+		} else if (reservedItems.size() >= 3) {
+			reservationValidationLabel.setText("You can not reserve more than three gadgets");
+		}else {
 			library.addReservation(gadget, customer);
 			setCustomer(customer);
 		}
