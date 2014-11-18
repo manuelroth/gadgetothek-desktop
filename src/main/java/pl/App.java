@@ -6,10 +6,14 @@ import java.awt.EventQueue;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+
 public class App 
 {
-    public static void main( String[] args ) throws IOException, InterruptedException, ExecutionException
+    public static void main( String[] args ) throws IOException, InterruptedException, ExecutionException, ClassNotFoundException, InstantiationException, IllegalAccessException, UnsupportedLookAndFeelException
     {
+    	UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
     	EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
