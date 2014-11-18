@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -17,7 +16,6 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableRowSorter;
 import javax.swing.JButton;
 
-import bl.Customer;
 import bl.Gadget;
 import bl.Library;
 
@@ -25,10 +23,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,7 +33,6 @@ public class GadgetMasterPanel extends JPanel {
     private JTable gadgetsTable = new JTable();
     private TableRowSorter<GadgetTableModel> sorter;
 	private GadgetTableModel gadgetTableModel;
-	private GadgetDetailFrame createGadgetDetailFrame = null;
 	private Map<Gadget, GadgetDetailFrame> editGadgetDetailFrames = new HashMap<Gadget, GadgetDetailFrame>();
 
 	/**
@@ -99,12 +94,7 @@ public class GadgetMasterPanel extends JPanel {
 		buttonPanel.add(newGadgetButton);
 		newGadgetButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (createGadgetDetailFrame == null)
-					createGadgetDetailFrame = new GadgetDetailFrame(new Gadget(), library, true);
-				else
-				{
-					createGadgetDetailFrame.setFocus(true);
-				}
+				new GadgetDetailFrame(new Gadget(), library, true);
 			}
 		});
 		
