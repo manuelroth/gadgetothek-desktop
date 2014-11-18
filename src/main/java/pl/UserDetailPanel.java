@@ -263,6 +263,7 @@ public class UserDetailPanel extends JPanel{
 		TableCellRenderer buttonRenderer = new JTableButtonRenderer();
 		reservationTable.getColumn("Ausleihen").setCellRenderer(buttonRenderer);
 		reservationTable.getColumn("Loeschen").setCellRenderer(buttonRenderer);
+		reservationTable.setAutoCreateColumnsFromModel(false);
 		reservationTable.addMouseListener(new MouseAdapter() {
 			
 			@Override
@@ -289,6 +290,7 @@ public class UserDetailPanel extends JPanel{
 		borrowTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		borrowTable.setModel(borrowTableModel);
 		borrowTable.setRowSorter(borrowSorter);	
+		borrowTable.setAutoCreateColumnsFromModel(false);
 		TableCellRenderer buttonRenderer = new JTableButtonRenderer();
 		borrowTable.getColumn("Ruecknahme").setCellRenderer(buttonRenderer);
 		borrowTable.addMouseListener(new MouseAdapter() {
