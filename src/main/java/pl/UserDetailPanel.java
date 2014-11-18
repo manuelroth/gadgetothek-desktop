@@ -221,6 +221,7 @@ public class UserDetailPanel extends JPanel{
 			reservationValidationLabel.setText("Gadget with id: " + newReservationTextField.getText() + " not available");
 		} else {
 			library.addReservation(gadget, customer);
+			setCustomer(customer);
 		}
 	}
 	
@@ -248,6 +249,7 @@ public class UserDetailPanel extends JPanel{
 			borrowValidationLabel.setText("Is already lent to " + library.getCustomer(customerId).getName());
 		} else {
 			library.addLoan(gadget, customer);
+			setCustomer(customer);
 		}
 	}
 	

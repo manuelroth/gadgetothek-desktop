@@ -50,8 +50,6 @@ public class BorrowTableModel extends AbstractTableModel implements Observer{
 		MessageData data = (MessageData) arg1;
 		if(!data.getTarget().equals("loan")) return;
 		
-		fireTableDataChanged();
-		
 		int pos = loans.indexOf((Loan)data.getData());
 		if(data.getType().equals("add")) {
 			fireTableRowsInserted(pos, pos);
@@ -74,9 +72,6 @@ public class BorrowTableModel extends AbstractTableModel implements Observer{
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		Loan loan = loans.get(rowIndex);
 		gadget = library.getGadget(loan.getGadgetId());
-		
-
-		System.out.println("getValueAt on BorrowTableModel = " + this.customer.getName());
 		
 		switch(columnIndex){
 		case 0:
@@ -104,6 +99,7 @@ public class BorrowTableModel extends AbstractTableModel implements Observer{
 						JOptionPane.showMessageDialog(null, "Gadget is reserved by "+library.getCustomer(library.getReservatonFor(gadget, true).get(0).getCustomerId()));
 					}
 					loan.returnCopy();
+					setCustomer(customer);
 					fireTableDataChanged();
 				}
 			});
@@ -114,7 +110,6 @@ public class BorrowTableModel extends AbstractTableModel implements Observer{
 	}
 	
 	public void setCustomer(Customer customer) {
-		System.out.println("setCustomer on BorrowTableModel = " + customer.getName());
 		this.customer = customer;
 		this.loans = library.getLoansFor(this.customer, true);
 		fireTableDataChanged();

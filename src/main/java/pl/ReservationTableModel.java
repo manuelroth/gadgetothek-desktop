@@ -87,6 +87,7 @@ public class ReservationTableModel extends AbstractTableModel implements Observe
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					library.addLoan(gadget, customer);
+					setCustomer(customer);
 				}
 			});
 			return ausleihenButton;
@@ -96,6 +97,7 @@ public class ReservationTableModel extends AbstractTableModel implements Observe
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					reservation.setFinished(true);
+					setCustomer(customer);
 					propagateUpdate(rowIndex);
 				}
 			});
