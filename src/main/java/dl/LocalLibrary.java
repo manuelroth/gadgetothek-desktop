@@ -1,6 +1,10 @@
 package dl;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import bl.Customer;
@@ -27,7 +31,32 @@ public class LocalLibrary  implements LibraryData {
 		addGadget(new Gadget("IPhone 5"));
 		addGadget(new Gadget("IPhone 6"));
 		
-		addLoan(new Loan(this.customers.get(0), this.gadgets.get(0)));
+		DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+		Date tempDate1 = new Date();		
+		try {
+			tempDate1 = dateFormat.parse("26.10.2014");
+		} catch (ParseException e) {
+		}
+		Date tempDate2 = new Date();
+		try {
+			tempDate2 = dateFormat.parse("10.11.2014");
+		} catch (ParseException e) {
+		}
+		addLoan(new Loan(this.customers.get(0), this.gadgets.get(0), tempDate1, tempDate2));
+		try {
+			tempDate1 = dateFormat.parse("30.10.2014");
+		} catch (ParseException e) {
+		}
+		try {
+			tempDate2 = dateFormat.parse("20.11.2014");
+		} catch (ParseException e) {
+		}
+		addLoan(new Loan(this.customers.get(1), this.gadgets.get(1), tempDate1, tempDate2));
+		try {
+			tempDate1 = dateFormat.parse("08.11.2014");
+		} catch (ParseException e) {
+		}
+		addLoan(new Loan(this.customers.get(1), this.gadgets.get(2), tempDate1));
 		addReservation(new Reservation(this.customers.get(1), this.gadgets.get(0)));
 		addReservation(new Reservation(this.customers.get(1), this.gadgets.get(1)));	
 	}
