@@ -21,6 +21,21 @@ public class Loan implements Dto<Loan>  {
 		this.customerId = customer.getStudentNumber();
 		pickupDate = new Date();		
 	}
+	
+	public Loan(Customer customer, Gadget copy, Date pickupDate) {
+		id = ""+Math.abs(UUID.randomUUID().getMostSignificantBits());
+		this.gadgetId = copy.getInventoryNumber();
+		this.customerId = customer.getStudentNumber();
+		this.pickupDate = pickupDate;		
+	}
+	
+	public Loan(Customer customer, Gadget copy, Date pickupDate, Date returnDate) {
+		id = ""+Math.abs(UUID.randomUUID().getMostSignificantBits());
+		this.gadgetId = copy.getInventoryNumber();
+		this.customerId = customer.getStudentNumber();
+		this.pickupDate = pickupDate;		
+		this.returnDate = returnDate;
+	}
 
 	public boolean isLent() {
 		return returnDate == null;
