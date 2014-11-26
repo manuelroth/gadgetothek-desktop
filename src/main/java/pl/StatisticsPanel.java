@@ -30,7 +30,7 @@ public class StatisticsPanel extends JPanel {
 	Library library = null;
 	int X = 100;
 	int Y = 10;
-	int height = 300;
+	int height = 250;
 	int width = 700;
 	int loanCountSpan = 10;
 	int pixelPerLoan = 30;
@@ -49,6 +49,8 @@ public class StatisticsPanel extends JPanel {
 	@Override
 	public void paint(Graphics g)
 	{
+		height = this.getHeight() - Y * 2;
+		width = this.getWidth() - X * 2;
 		borrowHistory = new TreeMap<Date, Integer>();
 		gadgetList = new ArrayList<Gadget>();
 		loanList = new ArrayList<Loan>();
@@ -122,8 +124,8 @@ public class StatisticsPanel extends JPanel {
 		pixelPerDay = Math.round((float) 1.0 * width / daySpan);
 		
 		int totalBorrows = 0;
-		int currentX = 100;
-		int currentY = 10 + 300;
+		int currentX = X;
+		int currentY = Y + height;
 		
 		for (int counter = 0; counter <= loanCountSpan; counter++)
 		{
@@ -161,8 +163,7 @@ public class StatisticsPanel extends JPanel {
 	
 	private int DateToPixel(Date date)
 	{		
-		long differenceInDays = getDateDiff(startDate, date, TimeUnit.DAYS);
-		System.out.println("" + differenceInDays + ";" + pixelPerDay);
+		long differenceInDays = getDateDiff(startDate, date, TimeUnit.DAYS);		
 		return (int) ((int) X + differenceInDays * pixelPerDay);
 	}
 }
