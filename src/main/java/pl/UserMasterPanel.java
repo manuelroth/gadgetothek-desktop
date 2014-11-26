@@ -94,10 +94,12 @@ public class UserMasterPanel extends JPanel {
 			
 			@Override
 			public void valueChanged(ListSelectionEvent e) {
-				int customerIndex = customerTable.convertRowIndexToModel(customerTable.getSelectedRow());
+				int customerIndex = 0;
+				if(customerTable.getSelectedRow() > -1){
+					customerIndex = customerTable.convertRowIndexToModel(customerTable.getSelectedRow());
+				}
 				Customer customer = library.getCustomers().get(customerIndex);
 				userDetailPanel.setCustomer(customer);
-				
 			}
 		});
 		
