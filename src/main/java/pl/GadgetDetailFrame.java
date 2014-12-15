@@ -40,6 +40,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
 
 public class GadgetDetailFrame {
 
@@ -220,13 +221,17 @@ public class GadgetDetailFrame {
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
 		InputMap imap = frame.getRootPane().getInputMap();
-		imap.put(KeyStroke.getKeyStroke("ESCAPE"), "ESCAPE released");
-		//imap.put(KeyStroke.getKeyStroke("ENTER"), "ENTER released");
+		imap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), "ESCAPE released");
+		imap.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "ENTER released");
 		ActionMap amap = frame.getRootPane().getActionMap();		
 		amap.put("ENTER released", new AbstractAction() {
 		      public void actionPerformed(ActionEvent e) {
 		          saveGadget();
-		        }});				
+		        }});
+		amap.put("ESCAPE released", new AbstractAction() {
+		      public void actionPerformed(ActionEvent e) {
+		          frame.dispose();
+		        }});
 	}
 
 	private void checkSaveable() {
